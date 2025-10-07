@@ -3,7 +3,7 @@
 // @namespace    http://rsupkandou.com
 // @version      2025-10-07
 // @description  Testing Filter Ruang Rawat di SPA (this code partially written by chatgpt)
-// @author       EngulfinglessRaiden
+// @author       TrixPone
 // @match        */spa-farmasi
 // @grant        GM.setValue
 // @grant        GM.getValue
