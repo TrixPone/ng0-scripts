@@ -3,7 +3,7 @@
 // @namespace    http://rsupkandou.com
 // @version      2025-10-07
 // @description  Testing Add Tombol EMR + Resume di SPA
-// @author       EngulfinglessRaiden
+// @author       TrixPone
 // @match        https://apotek.bpjs-kesehatan.go.id/apotek/RspMsk1.aspx
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bpjs-kesehatan.go.id
 // @grant        GM_openInTab
