@@ -1,24 +1,21 @@
 // ==UserScript==
-// @name         Testing - Filter Ruang Rawat di SPA v2
+// @name         Testing - Filter Ruang Rawat di SPA
 // @namespace    http://rsupkandou.com
-// @version      2025-07-24
-// @description  Testing ilter Ruang Rawat di SPA (this code partially written by chatgpt)
+// @version      2025-10-7
+// @description  Testing Filter Ruang Rawat di SPA (this code partially written by chatgpt)
 // @author       EngulfinglessRaiden
 // @match        */spa-farmasi
 // @grant        GM.setValue
 // @grant        GM.getValue
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @updateURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA%20v2.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
 
 function SPAExist () {
         'use strict';
-
-
-
-
 }
 
     const table = document.getElementById('div_eresep_list_tabel').children[0];
