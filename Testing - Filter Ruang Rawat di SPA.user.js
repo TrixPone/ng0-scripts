@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Filter Ruang Rawat di SPA
 // @namespace    http://rsupkandou.com
-// @version      2025-10-7
+// @version      2025-10-07
 // @description  Testing Filter Ruang Rawat di SPA (this code partially written by chatgpt)
 // @author       EngulfinglessRaiden
 // @match        */spa-farmasi
