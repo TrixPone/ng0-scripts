@@ -7,7 +7,7 @@
 // @match        https://apotek.bpjs-kesehatan.go.id/apotek/frmHistObat.aspx
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
-// @updateURL    
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Highlight%20Latest%20Individual%20Medication%20on%20History%20Obat%20Page.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
