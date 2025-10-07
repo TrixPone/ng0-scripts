@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Testing - Tombol EMR di Nomor Pendaftaran v3
 // @namespace    http://rsupkandou.com
-// @version      2025-07-24
+// @version      2025-10-07
 // @description  Testing Add Tombol EMR + Resume di SPA
-// @author       EngulfinglessRaiden
+// @author       TrixPone
 // @match        */spa-farmasi
 // @match        https://emr.rsupkandou.com/penunjang/C_historyPenunjang/viewCariHasilPenunjang
 // @match        https://emr.rsupkandou.com/emr
@@ -14,6 +14,7 @@
 // @grant        GM.getValue
 // @grant        GM.notification
 // @grant        GM.deleteValue
+// @updateURL    
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 
@@ -99,7 +100,7 @@ waitForKeyElements (
         console.log(await GM.getValue("NoRM"));
     } else if (currentURLPath !== '/spa-farmasi') {
         console.log(await GM.getValue("NoRM"));
-        GM.notification("Pasted data from SPA", "Value Get!");
+//        GM.notification("Pasted data from SPA", "Value Get!");
         switch(true){
             case currentURLPath.indexOf('viewCariHasilPenunjang') > -1:
                 //hopefully these elements doesn't change over time
