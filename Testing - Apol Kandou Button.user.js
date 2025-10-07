@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Apol Kandou Button
 // @namespace    http://rsupkandou.com
-// @version      2025-07-24
+// @version      2025-10-07
 // @description  Testing Add Tombol EMR + Resume di SPA
 // @author       EngulfinglessRaiden
 // @match        https://apotek.bpjs-kesehatan.go.id/apotek/RspMsk1.aspx
@@ -12,6 +12,7 @@
 // @grant        GM.notification
 // @grant        GM.deleteValue
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @updateURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Apol%20Kandou%20Button.user.js
 
 // ==/UserScript==
 
