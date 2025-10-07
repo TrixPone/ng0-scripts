@@ -1,7 +1,10 @@
 # ng0-scripts
 Below is a bunch of scripts i made for local ng0 usage
-**(It mostly focuses on Pharmacy side of things)**
+_(It mostly focuses on Pharmacy side of things)_
 
+
+# Prerequisite
+These scripts needs [Tampermonkey](https://www.tampermonkey.net/) to function
 
 # 1. Always 'Tidak Claim Non INACBGs'
 Automatically set Resep Claim to 'Tidak'
