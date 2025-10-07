@@ -1,20 +1,16 @@
 // ==UserScript==
 // @name         Testing - Quick Tombol Telaah
 // @namespace    http://rsupkandou.com
-// @version      2025-07-24
+// @version      2025-10-07
 // @description  Testing Quick Tombol Telaah
-// @author       EngulfinglessRaiden
+// @author       TrixPone
 // @match        */spa-farmasi
 // @match        https://emr.rsupkandou.com/penunjang/C_historyPenunjang/viewCariHasilPenunjang
 // @match        https://emr.rsupkandou.com/emr
 // @match        https://emr.rsupkandou.com/emr/C_emr/loadDetailErm/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
-// @grant        GM_openInTab
-// @grant        GM.setValue
-// @grant        GM.getValue
-// @grant        GM.notification
-// @grant        GM.deleteValue
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Tombol%20Telaah.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
