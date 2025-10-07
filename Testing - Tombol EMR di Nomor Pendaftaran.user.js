@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Testing - Tombol EMR di Nomor Pendaftaran v3
+// @name         Testing - Tombol EMR di Nomor Pendaftaran
 // @namespace    http://rsupkandou.com
 // @version      2025-10-07
 // @description  Testing Add Tombol EMR + Resume di SPA
