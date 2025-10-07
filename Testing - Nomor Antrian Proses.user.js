@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Testing - Nomor Antrian Proses
 // @namespace    http://rsupkandou.com
-// @version      2025-07-24
+// @version      2025-10-07
 // @description  Testing Add Tombol EMR + Resume di SPA
-// @author       EngulfinglessRaiden
+// @author       TrixPone
 // @match        */spa-farmasi
 // @match        https://*.rsupkandou.com*/monitoring/antrian/*
 // @grant        GM_openInTab
@@ -12,6 +12,7 @@
 // @grant        GM.notification
 // @grant        GM.deleteValue
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Nomor%20Antrian%20Proses.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
@@ -73,7 +74,7 @@ waitForKeyElements (
         console.log(await GM.getValue("NoAntrian"));
     } else if (currentURLPath !== '/spa-farmasi') {
         console.log(await GM.getValue("NoAntrian"));
-        GM.notification("Pasted data from SPA", "Value Get!");
+//        GM.notification("Pasted data from SPA", "Value Get!");
         switch(true){
             case currentURLPath.indexOf('antrianFarmasi') > -1:
                 //hopefully these elements doesn't change over time
