@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Testing - Tombol History Apol di Nomor Peserta
 // @namespace    http://rsupkandou.com
-// @version      2025-08-14
+// @version      2025-10-07
 // @description  Testing Add Tombol History Apol di SPA Farmasi
-// @author       EngulfinglessRaiden
+// @author       TrixPone
 // @match        */spa-farmasi
 // @match        https://apotek.bpjs-kesehatan.go.id/apotek/frmHistObat.aspx
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
@@ -12,6 +12,7 @@
 // @grant        GM.notification
 // @grant        GM.deleteValue
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20History%20Apol%20di%20Nomor%20Peserta.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
@@ -67,7 +68,7 @@ waitForKeyElements (
 //        GM.notification("No Number", "No Data")
         console.log(await GM.getValue("NumberApol"));
     } else if (currentURLPath !== '/spa-farmasi') {
-        GM.notification("Pasted data from SPA", "Value Get!");
+//        GM.notification("Pasted data from SPA", "Value Get!");
         //hopefully these elements doesn't change over time
         document.getElementById('ctl00_ctl00_ASPxSplitter1_Content_ContentSplitter_MainContent_txtNOKAPST_I').value = NumberApol
         document.getElementById('ctl00_ctl00_ASPxSplitter1_Content_ContentSplitter_MainContent_BtnCari_CD').click();
