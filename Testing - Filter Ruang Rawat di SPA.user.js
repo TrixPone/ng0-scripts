@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Filter Ruang Rawat di SPA
 // @namespace    http://rsupkandou.com
-// @version      2025-10-07
+// @version      2025-11-01
 // @description  Testing Filter Ruang Rawat di SPA (this code partially written by chatgpt)
 // @author       TrixPone
 // @match        */spa-farmasi
@@ -10,6 +10,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @updateURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA.user.js
+// @downloadURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
