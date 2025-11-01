@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Testing - Highlight Latest Individual Medication on History Obat Page
 // @namespace    http://rsupkandou.com
-// @version      2025-10-07
+// @version      2025-11-01
 // @description  Highlight Latest Individual Medication on History Obat Page, i admit on using chatgpt assistance on making this script
 // @author       TrixPone
 // @match        https://apotek.bpjs-kesehatan.go.id/apotek/frmHistObat.aspx
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Highlight%20Latest%20Individual%20Medication%20on%20History%20Obat%20Page.user.js
+// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Highlight%20Latest%20Individual%20Medication%20on%20History%20Obat%20Page.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
