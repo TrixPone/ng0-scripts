@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Re Enabling Paste on EMR
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01_v3
+// @version      2025-11-01_v4
 // @description  Testing EMR Paste
 // @author       TrixPone
 // @match        https://emr.rsupkandou.com/*
