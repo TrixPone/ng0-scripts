@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Always 'Tidak Claim Non INACBGs'
 // @namespace    http://rsupkandou.com
-// @version      2025-10-07
+// @version      2025-11-01
 // @description  Testing Quick Tombol Telaah
 // @author       TrixPone
 // @match        */spa-farmasi
