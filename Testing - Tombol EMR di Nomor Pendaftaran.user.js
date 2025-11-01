@@ -15,7 +15,7 @@
 // @grant        GM.notification
 // @grant        GM.deleteValue
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20EMR%20di%20Nomor%20Pendaftaran.user.js
-// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20EMR%20di%20Nomor%20Pendaftaran.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20EMR%20di%20Nomor%20Pendaftaran.user.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 
