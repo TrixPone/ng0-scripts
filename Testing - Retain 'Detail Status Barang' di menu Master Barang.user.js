@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @grant        none
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Retain%20'Detail%20Status%20Barang'%20di%20menu%20Master%20Barang.user.js
-// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Retain%20'Detail%20Status%20Barang'%20di%20menu%20Master%20Barang.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Retain%20'Detail%20Status%20Barang'%20di%20menu%20Master%20Barang.user.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 
