@@ -13,9 +13,10 @@
 // @grant        GM.deleteValue
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Re%20Enabling%20Paste%20on%20EMR.user.js
 // @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Re%20Enabling%20Paste%20on%20EMR.user.js
+// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 
-/* globals jQuery, $  */
+/* globals jQuery, $, waitForKeyElements */
 
 function enablePaste () {
     'use strict';
@@ -29,3 +30,9 @@ allPencatatan.forEach(element => {
   element.removeAttribute('ondrop');
 });
 }
+
+//wait for SPA element to show up first
+waitForKeyElements (
+    "#form_residen_soap",
+    enablePaste, false
+);
