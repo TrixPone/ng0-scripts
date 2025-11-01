@@ -25,6 +25,7 @@ function enablePaste () {
 var allPencatatan = document.querySelectorAll('[id^="pencatatan"]');
 var allRMKContentDiv = document.getElementById('table_rmk').querySelectorAll('div')
 var allRMKContentSpan = document.getElementById('table_rmk').querySelectorAll('span')
+//console.log('here')
 
 // remove onpaste and ondrop attributes
 allPencatatan.forEach(element => {
@@ -46,8 +47,8 @@ allRMKContentSpan.forEach(element => {
 
 }
 
-//wait for SPA element to show up first
+//wait for first table elements to show up first
 waitForKeyElements (
-    "#form_residen_soap",
+    "td.sorting_1",
     enablePaste, false
 );
