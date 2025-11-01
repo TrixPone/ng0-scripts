@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Tombol History Apol di Nomor Peserta
 // @namespace    http://rsupkandou.com
-// @version      2025-10-07
+// @version      2025-11-01
 // @description  Testing Add Tombol History Apol di SPA Farmasi
 // @author       TrixPone
 // @match        */spa-farmasi
@@ -13,6 +13,7 @@
 // @grant        GM.deleteValue
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20History%20Apol%20di%20Nomor%20Peserta.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20History%20Apol%20di%20Nomor%20Peserta.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
