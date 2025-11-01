@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Quick Tombol Telaah
 // @namespace    http://rsupkandou.com
-// @version      2025-10-07
+// @version      2025-11-01
 // @description  Testing Quick Tombol Telaah
 // @author       TrixPone
 // @match        */spa-farmasi
@@ -11,6 +11,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Tombol%20Telaah.user.js
+// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Tombol%20Telaah.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
