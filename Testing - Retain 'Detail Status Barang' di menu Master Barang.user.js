@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Testing - Retain 'Detail Status Barang' di menu Master Barang
 // @namespace    http://rsupkandou.com
-// @version      2025-10-07
+// @version      2025-11-01
 // @description  For some reason 'jenis status barang' status doesn't persists, this script aims to 'hopefully' fixes that
 // @author       EngulfinglessRaiden
 // @match        *.rsupkandou.com:3000/master/farmasi
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @grant        none
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Retain%20'Detail%20Status%20Barang'%20di%20menu%20Master%20Barang.user.js
+// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Retain%20'Detail%20Status%20Barang'%20di%20menu%20Master%20Barang.user.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 
