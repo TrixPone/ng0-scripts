@@ -59,8 +59,8 @@ button4.className = 'btn btn-sm btn-success text-light get-print'
     //append the button
 GrayBox.appendChild(button4);
 GrayBox.append("\u00A0");
-GrayBox.appendChild(button);
-GrayBox.append("\u00A0");
+//GrayBox.appendChild(button);
+//GrayBox.append("\u00A0");
 GrayBox.appendChild(button3);
 GrayBox.append("\u00A0");
 GrayBox.appendChild(button2);
