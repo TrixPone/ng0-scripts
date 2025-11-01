@@ -78,3 +78,10 @@ Adds shortcut button to open Apotek BPJS's Medication History on SPA-Page
 <img width="218" height="61" alt="image" src="https://github.com/user-attachments/assets/5d188af7-3c02-44b8-83e1-22e91c53a19d" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20History%20Apol%20di%20Nomor%20Peserta.user.js)
+
+# 11. EMR Page paste enabler
+Re Enables Pasting on SOAP forms and selecting texts on EMR Page
+
+<img width="695" height="169" alt="image" src="https://github.com/user-attachments/assets/6f2a436d-4140-498a-b753-d9dffe629ca3" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Re%20Enabling%20Paste%20on%20EMR.user.js)
