@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @grant        none
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20Gudang%20Medis%20di%20Peneriman%20Supplier.user.js
-// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20Gudang%20Medis%20di%20Peneriman%20Supplier.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20Gudang%20Medis%20di%20Peneriman%20Supplier.user.js
 // ==/UserScript==
 
 (function() {
