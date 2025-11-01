@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Re Enabling Paste on EMR
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01
+// @version      2025-11-01_v3
 // @description  Testing EMR Paste
 // @author       TrixPone
 // @match        https://emr.rsupkandou.com/*
@@ -23,12 +23,27 @@ function enablePaste () {
 
 //define variables
 var allPencatatan = document.querySelectorAll('[id^="pencatatan"]');
+var allRMKContentDiv = document.getElementById('table_rmk').querySelectorAll('div')
+var allRMKContentSpan = document.getElementById('table_rmk').querySelectorAll('span')
 
 // remove onpaste and ondrop attributes
 allPencatatan.forEach(element => {
   element.removeAttribute('onpaste');
   element.removeAttribute('ondrop');
 });
+
+// remove user-select property on div
+allRMKContentDiv.forEach(element => {
+  element.style.removeProperty('webkit-user-select');
+  element.style.removeProperty('user-select');
+});
+
+// remove user-select property on span
+allRMKContentSpan.forEach(element => {
+  element.style.removeProperty('webkit-user-select');
+  element.style.removeProperty('user-select');
+});
+
 }
 
 //wait for SPA element to show up first
