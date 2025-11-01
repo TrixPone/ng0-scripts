@@ -13,7 +13,7 @@
 // @grant        GM.deleteValue
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Nomor%20Antrian%20Proses.user.js
-// @downloadURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Nomor%20Antrian%20Proses.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Nomor%20Antrian%20Proses.user.js
 // ==/UserScript==
 
 /* globals jQuery, $, waitForKeyElements */
