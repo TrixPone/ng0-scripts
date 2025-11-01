@@ -11,8 +11,8 @@
 // @grant        GM.getValue
 // @grant        GM.notification
 // @grant        GM.deleteValue
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Re%20Enabling%20Paste%20on%20EMR.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Re%20Enabling%20Paste%20on%20EMR.user.js
 // ==/UserScript==
 
 /* globals jQuery, $  */
