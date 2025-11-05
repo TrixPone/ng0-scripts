@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Testing - Re Enabling Paste on EMR
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01_v4
-// @description  Testing EMR Paste
+// @version      2025-11-05
+// @description  Testing on enabling: paste, selecting, and printing on EMR
 // @author       TrixPone
 // @match        https://emr.rsupkandou.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
@@ -25,6 +25,9 @@ function enablePaste () {
 var allPencatatan = document.querySelectorAll('[id^="pencatatan"]');
 var allRMKContentDiv = document.getElementById('table_rmk').querySelectorAll('div')
 var allRMKContentSpan = document.getElementById('table_rmk').querySelectorAll('span')
+var printElement = document.getElementsByClassName('hiddenform ')[0];
+
+
 //console.log('here')
 
 // remove onpaste and ondrop attributes
@@ -44,6 +47,12 @@ allRMKContentSpan.forEach(element => {
   element.style.removeProperty('webkit-user-select');
   element.style.removeProperty('user-select');
 });
+
+// remove print override element
+if (printElement) {
+  printElement.remove(); // This removes the element from the DOM
+}
+
 
 }
 
