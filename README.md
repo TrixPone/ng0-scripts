@@ -61,7 +61,8 @@ Automatically check the previous status on the page
 # 8. Tombol EMR di Nomor Pendaftaran
 Adds useful shortcuts button to SPA-Page
 
-<img width="368" height="124" alt="image" src="https://github.com/user-attachments/assets/f890acc0-825e-43ef-b34b-de682b463d51" />
+<img width="399" height="112" alt="image" src="https://github.com/user-attachments/assets/d7f52d29-eab0-4e78-87b4-d332fd8064d5" />
+
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20EMR%20di%20Nomor%20Pendaftaran.user.js)
 
