@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Nomor Antrian Proses
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01
+// @version      2025-11-27
 // @description  Testing Add Tombol EMR + Resume di SPA
 // @author       TrixPone
 // @match        */spa-farmasi
@@ -18,16 +18,33 @@
 
 /* globals jQuery, $, waitForKeyElements */
 
+//changelog : 27/11/25
+//updated script to work with new naming (Reguler, Khusus, Cito)
+
 function addBTN () {
     'use strict';
 
-    //define variables
+    
+//regex for replace and reorder: Cito, Khusus and Reguler text
+function reorderAndMap(str) {
+  //Move prefix to the end (Cito, Khusus, Reguler)
+  let reordered = str.replace(/^(Cito|Khusus|Reguler)-(.+)$/, "$2-$1");
 
+  //Remove dash and convert prefix to a letter
+  return reordered.replace(/-(Cito|Khusus|Reguler)$/, (match, p1) => {
+    const map = { Cito: "C", Khusus: "B", Reguler: "A" };
+    return map[p1]; // remove dash and replace with mapped letter
+  });
+}
+
+
+//define variables
 //var NomorAntrian = document.getElementsByClassName('btn btn-sm btn-success btn_modal_estimasi_durasi')[0].dataset.nomor_antrian;
-var NomorAntrian = Array.from(document.querySelectorAll('label')).find(el => el.textContent === 'Nomor Antrian ').parentElement.childNodes[3].innerText
+var NomorAntrian = reorderAndMap((Array.from(document.querySelectorAll('label')).find(el => el.textContent === 'Nomor Antrian ').parentElement.childNodes[3].innerText))
 var DivAntrian = Array.from(document.querySelectorAll('label')).find(el => el.textContent === 'Nomor Antrian ').parentElement;
 var URLAntrian = 'https://ng0.rsupkandou.com:3000/monitoring/antrian/C_Antrian/antrianFarmasi/8'
 var NoRM = document.getElementById('wrapperResep').dataset.norm
+
 
 GM.setValue ("NoRM", NoRM)
 GM.setValue ("NoAntrian", NomorAntrian)
