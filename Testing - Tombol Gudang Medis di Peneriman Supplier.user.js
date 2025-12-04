@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Tombol Gudang Medis di Peneriman Supplier
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01
+// @version      2025-12-04
 // @description  Automatically set the date to 1st of 2025 and options to Gudang Medis with a single click
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/laporan-farmasi/get-penerimaan-supplier
@@ -11,16 +11,29 @@
 // @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20Gudang%20Medis%20di%20Peneriman%20Supplier.user.js
 // ==/UserScript==
 
+//changelog : 04/12/25
+//added new button 'Okt - Sekarang'
+
+
 (function() {
     'use strict';
 
 var GrayBox = document.getElementsByClassName('jumbotron bg-dark p-4 mt-2')[0];
 var button = document.createElement("Button");
+var button2 = document.createElement("Button");
+
 button.innerHTML = "View Gudang Medis Januari - Sekarang";
-button.style = "position:absolute";
+button.className = 'btn btn-sm btn-success text-light get-print'
+//button.style = "position:absolute";
+button2.innerHTML = "View Gudang Medis Oktober - Sekarang";
+button2.className = 'btn btn-sm btn-success text-light get-print'
+//button2.style = "position:absolute";
 
 
 GrayBox.appendChild(button);
+GrayBox.append("\u00A0");
+GrayBox.appendChild(button2);
+
 
 // Setting function for button when it is clicked.
     button.onclick = autoSet;
@@ -29,6 +42,17 @@ GrayBox.appendChild(button);
 		document.getElementsByClassName('form-control form-control-sm bg-dark').periode.dispatchEvent(new Event("change", {bubbles: true}));
 
 		document.getElementsByClassName('form-control form-control-sm formattanggal').tanggal_dari.value="2025-01-01";
+		document.getElementsByClassName('form-control form-control-sm bg-dark').jenis_gudang.selectedIndex=1;
+		document.getElementsByClassName('form-control form-control-sm bg-dark').format_laporan.selectedIndex=1;
+		document.getElementsByClassName('btn btn-sm btn-primary btn-block float-right')[0].click();
+      }
+
+    button2.onclick = autoSet2;
+      function autoSet2() {
+        document.getElementsByClassName('form-control form-control-sm bg-dark').periode.selectedIndex=1;
+		document.getElementsByClassName('form-control form-control-sm bg-dark').periode.dispatchEvent(new Event("change", {bubbles: true}));
+
+		document.getElementsByClassName('form-control form-control-sm formattanggal').tanggal_dari.value="2025-10-01";
 		document.getElementsByClassName('form-control form-control-sm bg-dark').jenis_gudang.selectedIndex=1;
 		document.getElementsByClassName('form-control form-control-sm bg-dark').format_laporan.selectedIndex=1;
 		document.getElementsByClassName('btn btn-sm btn-primary btn-block float-right')[0].click();
