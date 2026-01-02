@@ -11,8 +11,8 @@
 // @grant        GM.getValue
 // @grant        GM.notification
 // @grant        GM.deleteValue
-// @updateURL
-// @downloadURL
+// @updateURL    https://raw.githubusercontent.com/TrixPone/ng0-scripts/refs/heads/main/Testing%20-%20Quick%20Print%20Faktur.js
+// @downloadURL  https://raw.githubusercontent.com/TrixPone/ng0-scripts/refs/heads/main/Testing%20-%20Quick%20Print%20Faktur.js
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // ==/UserScript==
 
