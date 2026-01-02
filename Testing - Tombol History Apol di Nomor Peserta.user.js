@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Tombol History Apol di Nomor Peserta
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01
+// @version      2026-01-02
 // @description  Testing Add Tombol History Apol di SPA Farmasi
 // @author       TrixPone
 // @match        */spa-farmasi
