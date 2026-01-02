@@ -86,3 +86,10 @@ Re Enables Pasting on SOAP forms and selecting texts on EMR Page
 <img width="695" height="169" alt="image" src="https://github.com/user-attachments/assets/6f2a436d-4140-498a-b753-d9dffe629ca3" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Re%20Enabling%20Paste%20on%20EMR.user.js)
+
+
+# 12. Quick Print Buttons
+Add Faktur Buttons on Resep Detail Menu
+<img width="774" height="146" alt="image" src="https://github.com/user-attachments/assets/a8933e65-403a-4e20-a4c0-3a00d08c3f83" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Print%20Faktur.js)
