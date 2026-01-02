@@ -42,7 +42,30 @@ GrayBox.appendChild(button);
         window.open(URLHistoryApol);
         console.log(GM.listValues());
     }
+
+//add new copy function
+var copyButton = document.createElement("icon");
+copyButton.className = 'fa fa-copy'
+
+document.getElementsByClassName('col-12 mt-1')[2].appendChild(copyButton);
+
+copyButton.addEventListener("click", function (e) {
+if (e.target.dataset.added) return;
+
+     navigator.clipboard.writeText(document.getElementsByClassName('col-12 mt-1')[2].innerText)
+        .then(() => {
+          // feedback text
+          const msg = document.createTextNode(' Copied!');
+          e.target.after(msg);
+
+          setTimeout(() => msg.remove(), 2000);
+        })
+        .catch(err => {
+          console.error('Copy failed', err);
+        });
+});
 }
+
 
 
 //wait for SPA element to show up first
