@@ -74,7 +74,7 @@ Adds useful shortcuts button to SPA-Page
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20Gudang%20Medis%20di%20Peneriman%20Supplier.user.js)
 
 # 10. Tombol History Apol di Nomor Peserta
-Adds shortcut button to open Apotek BPJS's Medication History on SPA-Page
+Adds shortcut button to copy / open Apotek BPJS's Medication History on SPA-Page
 
 <img width="218" height="66" alt="image" src="https://github.com/user-attachments/assets/adca1185-b7d2-4a41-ac07-77e464600dfc" />
 
