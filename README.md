@@ -92,4 +92,4 @@ Re Enables Pasting on SOAP forms and selecting texts on EMR Page
 Add Faktur Buttons on Resep Detail Menu
 <img width="774" height="146" alt="image" src="https://github.com/user-attachments/assets/a8933e65-403a-4e20-a4c0-3a00d08c3f83" />
 
-[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Print%20Faktur.js)
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Print%20Faktur.user.js)
