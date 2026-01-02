@@ -76,7 +76,8 @@ Adds useful shortcuts button to SPA-Page
 # 10. Tombol History Apol di Nomor Peserta
 Adds shortcut button to open Apotek BPJS's Medication History on SPA-Page
 
-<img width="218" height="61" alt="image" src="https://github.com/user-attachments/assets/5d188af7-3c02-44b8-83e1-22e91c53a19d" />
+<img width="218" height="66" alt="image" src="https://github.com/user-attachments/assets/adca1185-b7d2-4a41-ac07-77e464600dfc" />
+
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Tombol%20History%20Apol%20di%20Nomor%20Peserta.user.js)
 
