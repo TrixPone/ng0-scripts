@@ -4,7 +4,10 @@ _(It mostly focuses on Pharmacy side of things)_
 
 
 # Prerequisite
-These scripts needs [Tampermonkey](https://www.tampermonkey.net/) to function
+These scripts needs [Tampermonkey](https://www.tampermonkey.net/) to function, don't forget to allow userscripts in extension options
+
+<img width="703" height="261" alt="image" src="https://github.com/user-attachments/assets/7c0c405b-bb1e-4cc6-ac85-44db64763f98" />
+
 
 # 1. Always 'Tidak Claim Non INACBGs'
 Automatically set Resep Claim to 'Tidak'
