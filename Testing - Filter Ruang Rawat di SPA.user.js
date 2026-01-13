@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         SPA Farmasi – Filter + Search (Auto Rebuild ver)
+// @name         Testing - Filter Ruang Rawat di SPA v2
 // @namespace    http://rsupkandou.com
 // @version      2026-01-13
 // @description  Filter Ruang Rawat, Status Resep, and text search with auto rebuild
