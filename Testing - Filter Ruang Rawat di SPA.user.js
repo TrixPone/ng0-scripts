@@ -1,106 +1,118 @@
 // ==UserScript==
-// @name         Testing - Filter Ruang Rawat di SPA
+// @name         SPA Farmasi – Filter + Search (Auto Rebuild ver)
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01
-// @description  Testing Filter Ruang Rawat di SPA (this code partially written by chatgpt)
-// @author       TrixPone
+// @version      2026-01-13
+// @description  Filter Ruang Rawat, Status Resep, and text search with auto rebuild
 // @match        */spa-farmasi
-// @grant        GM.setValue
-// @grant        GM.getValue
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @updateURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA.user.js
 // @downloadURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA.user.js
 // ==/UserScript==
 
-/* globals jQuery, $, waitForKeyElements */
+/* globals waitForKeyElements */
 
-function SPAExist () {
-        'use strict';
-}
+// this script is made with AI assistance
 
-    const table = document.getElementById('div_eresep_list_tabel').children[0];
-    const rows = table.querySelectorAll("tbody tr");
+(function () {
+    'use strict';
 
- function createDropdown(columnIndex, labelText, id) {
-     'use strict';
+    let ruangDropdown, statusDropdown, searchInput;
 
+    function clearOldControls() {
+        document.querySelectorAll('.spa-filter-col').forEach(el => el.remove());
+    }
 
+    function initControls(headerRow) {
+        clearOldControls();
 
-    // Create dropdown
+        function createCol() {
+            const col = document.createElement('div');
+            col.className = 'col spa-filter-col';
+            headerRow.appendChild(col);
+            return col;
+        }
 
-    const dropdownlocation = document.getElementById('div_eresep_list_header').children[0]
-    const dropdownDiv = document.createElement('div')
-    dropdownDiv.classList.add('col');
-    dropdownDiv.id = 'dropdownDivHere';
-    dropdownlocation.appendChild(dropdownDiv)
+        // Ruang Rawat
+        ruangDropdown = document.createElement('select');
+        ruangDropdown.className = 'form-control form-control-sm bg-dark';
+        ruangDropdown.innerHTML = `<option value="">-- All Ruang --</option>`;
+        createCol().appendChild(ruangDropdown);
 
-        const dropdown = document.createElement("select");
-        dropdown.id = id;
-//        dropdown.style.margin = "10px 10px 10px 0";
-        dropdown.className = "form-control form-control-sm bg-dark";
-//        dropdown.style.width = "200px";
+        // Status Resep
+        statusDropdown = document.createElement('select');
+        statusDropdown.className = 'form-control form-control-sm bg-dark';
+        statusDropdown.innerHTML = `<option value="">-- All Status --</option>`;
+        createCol().appendChild(statusDropdown);
 
-        // Add label
-        const label = document.createElement("label");
-        label.textContent = labelText + ": ";
-        label.style.color = "white";
-        label.style.marginRight = "5px";
+        // Search box
+        searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.placeholder = 'Cari nama / norm / resep...';
+        searchInput.className = 'form-control form-control-sm bg-dark';
+        createCol().appendChild(searchInput);
+    }
 
-        // Add "All" option
-        const allOption = document.createElement("option");
-        allOption.value = "";
-        allOption.textContent = "-- All --";
-        dropdown.appendChild(allOption);
+    function populateDropdown(dropdown, rows, columnIndex) {
+        const values = new Set();
 
-        // Collect unique values in column
-        const valueSet = new Set();
         rows.forEach(row => {
-            const cellText = row.cells[columnIndex].innerText.trim();
-            valueSet.add(cellText);
+            values.add(row.cells[columnIndex].innerText.trim());
         });
 
-        // Populate dropdown
-        valueSet.forEach(val => {
-            const option = document.createElement("option");
-            option.value = val;
-            option.textContent = val;
-            dropdown.appendChild(option);
+        values.forEach(val => {
+            const opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = val;
+            dropdown.appendChild(opt);
         });
-
-        // Wrap label + dropdown together
-        const container = document.createElement("div");
-        container.style.display = "inline-block";
-//        dropdownDiv.appendChild(label);
-        dropdownDiv.appendChild(dropdown);
-
-      return dropdown;
- }
-    const ruangDropdown = createDropdown(5, "Filter by Ruang Rawat", "ruangRawatFilter");
-    const statusDropdown = createDropdown(8, "Filter by Status Resep", "statusResepFilter");
+    }
 
     function applyFilters() {
         const ruangVal = ruangDropdown.value;
         const statusVal = statusDropdown.value;
+        const searchVal = searchInput.value.toLowerCase();
 
-        rows.forEach(row => {
+        document.querySelectorAll('#div_eresep_list_tabel tbody tr').forEach(row => {
             const ruang = row.cells[5].innerText.trim();
             const status = row.cells[8].innerText.trim();
+            const rowText = row.innerText.toLowerCase();
 
-            const ruangMatch = ruangVal === "" || ruang === ruangVal;
-            const statusMatch = statusVal === "" || status === statusVal;
+            const ruangMatch = ruangVal === '' || ruang === ruangVal;
+            const statusMatch = statusVal === '' || status === statusVal;
+            const searchMatch = searchVal === '' || rowText.includes(searchVal);
 
-            row.style.display = (ruangMatch && statusMatch) ? "" : "none";
+            row.style.display = (ruangMatch && statusMatch && searchMatch)
+                ? ''
+                : 'none';
         });
     }
 
-    ruangDropdown.addEventListener("change", applyFilters);
-    statusDropdown.addEventListener("change", applyFilters);
+    function initFilters() {
+        const table = document.querySelector('#div_eresep_list_tabel table');
+        if (!table) return;
 
+        const rows = table.querySelectorAll('tbody tr');
+        if (!rows.length) return;
 
+        const headerRow = document
+            .getElementById('div_eresep_list_header')
+            .querySelector('.row');
 
-//wait for SPA element to show up first
-waitForKeyElements (
-    "#div_eresep_list_tabel",
-    applyFilters, false
-);
+        initControls(headerRow);
+
+        populateDropdown(ruangDropdown, rows, 5);
+        populateDropdown(statusDropdown, rows, 8);
+
+        ruangDropdown.addEventListener('change', applyFilters);
+        statusDropdown.addEventListener('change', applyFilters);
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    // Rebuild whenever table appears / reappears
+    waitForKeyElements(
+        '#div_eresep_list_tabel table',
+        initFilters,
+        true
+    );
+})();
