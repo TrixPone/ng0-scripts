@@ -3,6 +3,7 @@
 // @namespace    http://rsupkandou.com
 // @version      2026-01-13
 // @description  Filter Ruang Rawat, Status Resep, and text search with auto rebuild
+// @author       TrixPone
 // @match        */spa-farmasi
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
