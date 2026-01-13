@@ -18,7 +18,30 @@
 (function () {
     'use strict';
 
-    let ruangDropdown, statusDropdown, searchInput;
+    const STORAGE_KEY = 'spaFarmasiFilters';
+    let lastTable = null;
+
+    let ruangDropdown, statusDropdown, searchInput, clearBtn;
+
+    /* -------------------- STATE -------------------- */
+
+    function saveState() {
+        GM.setValue(STORAGE_KEY, {
+            ruang: ruangDropdown.value,
+            status: statusDropdown.value,
+            search: searchInput.value
+        });
+    }
+
+    async function loadState() {
+        return await GM.getValue(STORAGE_KEY, {
+            ruang: '',
+            status: '',
+            search: ''
+        });
+    }
+
+    /* -------------------- UI -------------------- */
 
     function clearOldControls() {
         document.querySelectorAll('.spa-filter-col').forEach(el => el.remove());
@@ -46,21 +69,51 @@
         statusDropdown.innerHTML = `<option value="">-- All Status --</option>`;
         createCol().appendChild(statusDropdown);
 
-        // Search box
+        // Search wrapper
+        const searchCol = createCol();
+        searchCol.style.position = 'relative';
+
         searchInput = document.createElement('input');
         searchInput.type = 'text';
         searchInput.placeholder = 'Cari nama / norm / resep...';
         searchInput.className = 'form-control form-control-sm bg-dark';
-        createCol().appendChild(searchInput);
+        searchCol.appendChild(searchInput);
+
+        // Clear (❌) button
+        clearBtn = document.createElement('span');
+        clearBtn.innerHTML = '&times;';
+        clearBtn.style.cssText = `
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px;
+            color: #aaa;
+            display: none;
+            user-select: none;
+        `;
+        searchCol.appendChild(clearBtn);
+
+        clearBtn.addEventListener('mousedown', e => {
+            e.preventDefault(); // prevent focus loss
+            searchInput.value = '';
+            saveState();
+            applyFilters();
+            toggleClear();
+            searchInput.focus();
+        });
     }
+
+    function toggleClear() {
+        clearBtn.style.display = searchInput.value ? 'block' : 'none';
+    }
+
+    /* -------------------- DROPDOWNS -------------------- */
 
     function populateDropdown(dropdown, rows, columnIndex) {
         const values = new Set();
-
-        rows.forEach(row => {
-            values.add(row.cells[columnIndex].innerText.trim());
-        });
-
+        rows.forEach(row => values.add(row.cells[columnIndex].innerText.trim()));
         values.forEach(val => {
             const opt = document.createElement('option');
             opt.value = val;
@@ -68,6 +121,8 @@
             dropdown.appendChild(opt);
         });
     }
+
+    /* -------------------- FILTER LOGIC -------------------- */
 
     function applyFilters() {
         const ruangVal = ruangDropdown.value;
@@ -79,25 +134,30 @@
             const status = row.cells[8].innerText.trim();
             const rowText = row.innerText.toLowerCase();
 
-            const ruangMatch = ruangVal === '' || ruang === ruangVal;
-            const statusMatch = statusVal === '' || status === statusVal;
-            const searchMatch = searchVal === '' || rowText.includes(searchVal);
-
-            row.style.display = (ruangMatch && statusMatch && searchMatch)
-                ? ''
-                : 'none';
+            row.style.display =
+                (ruangVal === '' || ruang === ruangVal) &&
+                (statusVal === '' || status === statusVal) &&
+                (searchVal === '' || rowText.includes(searchVal))
+                    ? ''
+                    : 'none';
         });
+
+        toggleClear();
     }
 
-    function initFilters() {
+    /* -------------------- INIT -------------------- */
+
+    async function initFilters() {
         const table = document.querySelector('#div_eresep_list_tabel table');
-        if (!table) return;
+        if (!table || table === lastTable) return;
+
+        lastTable = table;
 
         const rows = table.querySelectorAll('tbody tr');
         if (!rows.length) return;
 
-        const headerRow = document
-            .getElementById('div_eresep_list_header')
+        const headerRow =
+            document.getElementById('div_eresep_list_header')
             .querySelector('.row');
 
         initControls(headerRow);
@@ -105,15 +165,36 @@
         populateDropdown(ruangDropdown, rows, 5);
         populateDropdown(statusDropdown, rows, 8);
 
-        ruangDropdown.addEventListener('change', applyFilters);
-        statusDropdown.addEventListener('change', applyFilters);
-        searchInput.addEventListener('input', applyFilters);
+        const state = await loadState();
+
+        ruangDropdown.value = state.ruang;
+        statusDropdown.value = state.status;
+        searchInput.value = state.search;
+
+        ruangDropdown.addEventListener('change', () => {
+            saveState();
+            applyFilters();
+        });
+
+        statusDropdown.addEventListener('change', () => {
+            saveState();
+            applyFilters();
+        });
+
+        searchInput.addEventListener('input', () => {
+            saveState();
+            applyFilters();
+        });
+
+        applyFilters();
     }
 
-    // Rebuild whenever table appears / reappears
+    /* -------------------- SPA WATCHER -------------------- */
+
     waitForKeyElements(
         '#div_eresep_list_tabel table',
         initFilters,
         true
     );
+
 })();
