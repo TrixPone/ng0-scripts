@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Testing - Filter Ruang Rawat di SPA v2
+// @name         Testing - Filter Ruang Rawat di SPA
 // @namespace    http://rsupkandou.com
 // @version      2026-01-13
-// @description  Filter Ruang Rawat, Status Resep, and text search with auto rebuild
+// @description  Filter Ruang Rawat, Status Resep, and text search (auto rebuild ver)
 // @author       TrixPone
 // @match        */spa-farmasi
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
@@ -13,7 +13,7 @@
 
 /* globals waitForKeyElements */
 
-// this script is made with AI assistance
+// note: this script is made with AI assistance
 
 (function () {
     'use strict';
