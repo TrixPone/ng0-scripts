@@ -7,8 +7,8 @@
 // @grant        none
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com.
 // @author       TrixPone
-// @updateURL	   
-// @downloadURL	 
+// @updateURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Download%20Merged%20PDF%20in%20ApotekBPJS%20Page.user.js  
+// @downloadURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Download%20Merged%20PDF%20in%20ApotekBPJS%20Page.user.js
 // ==/UserScript==
 
 // AI ASSISTANCE WAS USED IN MAKING THIS SCRIPT
