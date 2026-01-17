@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Testing - Download Merged PDF in ApotekBPJS Page
 // @namespace    http://rsupkandou.com
-// @version      1.2
+// @version      1.3
 // @description  Download MergedPDF after iframe gen
-// @match        */getViewMonitoringKlaimApotek
+// @match        https://ng0.rsupkandou.com:3000/monitoring/depo/C_monitoring_obat/getViewMonitoringKlaimApotek
 // @grant        none
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com.
 // @author       TrixPone
@@ -23,28 +23,39 @@
             .replace(/[^\w\-]/g, '');
     }
 
-    function waitForIframeAndLoad(callback) {
+    function waitForIframeSrc(callback) {
         const wrapper = document.querySelector('#wrapper_iframe');
         if (!wrapper) return;
 
-        const observer = new MutationObserver(() => {
+        // Step 1: wait for iframe existence
+        const iframeObserver = new MutationObserver(() => {
             const iframe = wrapper.querySelector('iframe');
-            if (!iframe || !iframe.src) return;
+            if (!iframe) return;
 
-            observer.disconnect();
+            iframeObserver.disconnect();
 
-            iframe.addEventListener('load', () => {
+            // Step 2: watch src changes
+            const srcObserver = new MutationObserver(() => {
+                const src = iframe.getAttribute('src');
+                if (!src || src === 'about:blank') return;
+
+                srcObserver.disconnect();
                 callback(iframe);
-            }, { once: true });
+            });
+
+            srcObserver.observe(iframe, {
+                attributes: true,
+                attributeFilter: ['src']
+            });
         });
 
-        observer.observe(wrapper, { childList: true, subtree: true });
+        iframeObserver.observe(wrapper, { childList: true, subtree: true });
     }
 
-    function addDownloadButtons() {
+    function injectButtons() {
         document.querySelectorAll('.btn-modal-generate-pdf').forEach(btn => {
-            if (btn.dataset.injected) return;
-            btn.dataset.injected = '1';
+            if (btn.dataset.hooked) return;
+            btn.dataset.hooked = '1';
 
             const row = btn.closest('tr');
             if (!row) return;
@@ -58,20 +69,20 @@
             dlBtn.innerHTML = '<i class="fa fa-download"></i> Download PDF';
 
             dlBtn.onclick = () => {
-                // Step 1: open modal
+                // Open modal
                 btn.click();
 
-                // Step 2: wait for modal & Generate PDF button
+                // Wait for Generate PDF button
                 const modalObserver = new MutationObserver(() => {
                     const genBtn = document.querySelector('#btn-generate-pdf');
                     if (!genBtn) return;
 
                     modalObserver.disconnect();
 
-                    // Step 3: wait for iframe generation
-                    waitForIframeAndLoad((iframe) => {
+                    // Watch iframe src
+                    waitForIframeSrc((iframe) => {
                         fetch(iframe.src, { credentials: 'include' })
-                            .then(res => res.blob())
+                            .then(r => r.blob())
                             .then(blob => {
                                 const url = URL.createObjectURL(blob);
                                 const a = document.createElement('a');
@@ -84,23 +95,26 @@
                             })
                             .catch(err => {
                                 console.error(err);
-                                alert('Failed to download PDF');
+                                alert('PDF download failed');
                             });
                     });
 
-                    // Step 4: trigger backend merge
+                    // Trigger backend merge
                     genBtn.click();
                 });
 
-                modalObserver.observe(document.body, { childList: true, subtree: true });
+                modalObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
             };
 
             btn.parentNode.appendChild(dlBtn);
         });
     }
 
-    const tableObserver = new MutationObserver(addDownloadButtons);
+    const tableObserver = new MutationObserver(injectButtons);
     tableObserver.observe(document.body, { childList: true, subtree: true });
 
-    setTimeout(addDownloadButtons, 1500);
+    setTimeout(injectButtons, 1500);
 })();
