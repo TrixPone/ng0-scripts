@@ -99,3 +99,10 @@ Add print buttons outside of the print modal
 <img width="774" height="146" alt="image" src="https://github.com/user-attachments/assets/a8933e65-403a-4e20-a4c0-3a00d08c3f83" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Quick%20Print%20Faktur.user.js)
+
+
+# 13. Simplify Nomor Antrian Buttons
+Make it so its easier to click the buttons
+<img width="1107" height="720" alt="image" src="https://github.com/user-attachments/assets/337ece30-c05c-4cf2-bda9-857fe8ed2d47" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20TV%20Mode%20Antrian%20%E2%80%93%20RJ%20Only.user.js)
