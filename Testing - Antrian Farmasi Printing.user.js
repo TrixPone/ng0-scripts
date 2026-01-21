@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         Testing - Antrian Farmasi Printing
 // @namespace    http://rsupkandou.com
-// @version      2026-01-28
+// @version      2026-01-21
 // @description  Script for filtering, sort and printing from Antrian Farmasi page
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/monitoring/antrian/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @grant        none
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Antrian%20Farmasi%20Printing.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Antrian%20Farmasi%20Printing.user.js
 // ==/UserScript==
 
 // THIS SCRIPT IS FULLY MADE WITH AI
