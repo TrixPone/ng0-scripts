@@ -26,7 +26,6 @@
     let sortState = JSON.parse(localStorage.getItem('antrianSort') || 'null');
 
     const ACTIVE_COLOR = '#00ddbf';
-    const REMOVE_HEADERS = ['Status', 'Mulai', 'Estimasi', 'Selesai', 'Durasi'];
 
     /* ================= STYLES ================= */
 
@@ -77,8 +76,12 @@
         const toggleBtn = btn('Toggle Print State', 'btn btn-warning btn-sm', togglePrint);
         toggleBtn.id = 'togglePrintBtn';
 
-        const printBtn = btn('<i class="fa fa-print"></i> Print Selected Rows',
-            'btn btn-success btn-sm', printSelected, true);
+        const printBtn = btn(
+            '<i class="fa fa-print"></i> Print Selected Rows',
+            'btn btn-success btn-sm',
+            printSelected,
+            true
+        );
         printBtn.style.display = 'none';
 
         const tools = document.createElement('div');
@@ -89,19 +92,30 @@
         const khususBtn = filterBtn('Khusus', 'B', 'yellow-button');
         const citoBtn = filterBtn('CITO', 'C', 'red-button');
 
-        const selectAllBtn = btn('Select ALL Visible Rows',
-            'btn btn-outline-light btn-sm', selectAllVisible);
-        const deselectBtn = btn('Deselect All',
-            'btn btn-outline-light btn-sm', deselectAll);
+        const selectAllBtn = btn(
+            'Select ALL Visible Rows',
+            'btn btn-outline-light btn-sm',
+            selectAllVisible
+        );
+        const deselectBtn = btn(
+            'Deselect All',
+            'btn btn-outline-light btn-sm',
+            deselectAll
+        );
 
         const fontDown = btn('A−', 'btn btn-secondary btn-sm', () => changeFont(-1));
         const fontUp = btn('A+', 'btn btn-secondary btn-sm', () => changeFont(1));
         const fontReset = btn('Reset Font', 'btn btn-secondary btn-sm', resetFont);
 
         tools.append(
-            fontDown, fontUp, fontReset,
-            regulerBtn, khususBtn, citoBtn,
-            selectAllBtn, deselectBtn
+            fontDown,
+            fontUp,
+            fontReset,
+            regulerBtn,
+            khususBtn,
+            citoBtn,
+            selectAllBtn,
+            deselectBtn
         );
 
         wrap.append(toggleBtn, printBtn, tools);
@@ -116,7 +130,7 @@
     function btn(text, cls, fn, html = false) {
         const b = document.createElement('button');
         b.className = cls + ' mr-1';
-        html ? b.innerHTML = text : b.textContent = text;
+        html ? (b.innerHTML = text) : (b.textContent = text);
         b.onclick = fn;
         return b;
     }
@@ -168,28 +182,31 @@
     function applyFilter() {
         document.querySelectorAll('#tabel_antrian_farmasi tbody tr').forEach(tr => {
             const code = tr.querySelector('td:nth-child(2)')?.innerText.trim();
-            tr.style.display = !activeFilter || code?.endsWith(activeFilter) ? '' : 'none';
+            tr.style.display =
+                !activeFilter || code?.endsWith(activeFilter) ? '' : 'none';
         });
     }
 
     function updateFilterButtons() {
         const wrap = document.querySelector('.col-12')?.firstChild;
         if (!wrap) return;
-        Object.entries(wrap._filterBtns).forEach(([k, b]) => {
-            const suf = k === 'regulerBtn' ? 'A' : k === 'khususBtn' ? 'B' : 'C';
-            b.classList.toggle('btn-active-custom', activeFilter === suf);
+
+        Object.entries(wrap._filterBtns).forEach(([key, btn]) => {
+            const suffix = key === 'regulerBtn' ? 'A' : key === 'khususBtn' ? 'B' : 'C';
+            btn.classList.toggle('btn-active-custom', activeFilter === suffix);
         });
     }
 
     /* ================= FONT ================= */
 
     function applyFont() {
-        document.querySelectorAll('#tabel_antrian_farmasi tbody tr')
-            .forEach(tr => tr.style.fontSize = fontSize + 'px');
+        document
+            .querySelectorAll('#tabel_antrian_farmasi tbody tr')
+            .forEach(tr => (tr.style.fontSize = fontSize + 'px'));
     }
 
-    function changeFont(d) {
-        fontSize = Math.min(22, Math.max(10, fontSize + d));
+    function changeFont(delta) {
+        fontSize = Math.min(22, Math.max(10, fontSize + delta));
         localStorage.setItem('antrianFontSize', fontSize);
         applyFont();
     }
@@ -203,21 +220,22 @@
     /* ================= SORT ================= */
 
     function injectSortButtons() {
-        const ths = document.querySelectorAll('#tabel_antrian_farmasi thead th');
-        ths.forEach((th, i) => {
+        document.querySelectorAll('#tabel_antrian_farmasi thead th').forEach((th, i) => {
             if (th.querySelector('.sort-btn')) return;
-            const btn = document.createElement('button');
-            btn.className = 'sort-btn';
-            btn.innerHTML = '▲▼';
-            btn.onclick = () => toggleSort(i, btn);
-            th.appendChild(btn);
+
+            const sb = document.createElement('button');
+            sb.className = 'sort-btn';
+            sb.innerHTML = '▲▼';
+            sb.onclick = () => toggleSort(i);
+            th.appendChild(sb);
         });
     }
 
-    function toggleSort(col, btn) {
-        sortState = sortState?.col === col
-            ? { col, dir: sortState.dir === 'asc' ? 'desc' : 'asc' }
-            : { col, dir: 'asc' };
+    function toggleSort(col) {
+        sortState =
+            sortState?.col === col
+                ? { col, dir: sortState.dir === 'asc' ? 'desc' : 'asc' }
+                : { col, dir: 'asc' };
 
         localStorage.setItem('antrianSort', JSON.stringify(sortState));
         applySort();
@@ -243,13 +261,18 @@
     /* ================= SELECT ================= */
 
     function selectAllVisible() {
-        document.querySelectorAll('#tabel_antrian_farmasi tbody tr')
-            .forEach(tr => tr.style.display !== 'none' &&
-                tr.classList.add('selected-print-row'));
+        document
+            .querySelectorAll('#tabel_antrian_farmasi tbody tr')
+            .forEach(tr => {
+                if (tr.style.display !== 'none') {
+                    tr.classList.add('selected-print-row');
+                }
+            });
     }
 
     function deselectAll() {
-        document.querySelectorAll('.selected-print-row')
+        document
+            .querySelectorAll('.selected-print-row')
             .forEach(tr => tr.classList.remove('selected-print-row'));
     }
 
@@ -258,21 +281,42 @@
     function printSelected() {
         const table = document.querySelector('#tabel_antrian_farmasi table');
         const selected = table.querySelectorAll('tbody tr.selected-print-row');
-        if (!selected.length) return alert('No rows selected.');
 
+        if (!selected.length) {
+            alert('No rows selected.');
+            return;
+        }
+
+        /* === ROBUST COLUMN REMOVAL === */
         const removeIdx = [];
         table.querySelectorAll('thead th').forEach((th, i) => {
-            if (REMOVE_HEADERS.includes(th.innerText.trim())) removeIdx.push(i);
+            const text = th.innerText
+                .toLowerCase()
+                .replace(/\s+/g, '');
+
+            if (
+                text.includes('status') ||
+                text.includes('mulai') ||
+                text.includes('estimasi') ||
+                text.includes('selesai') ||
+                text.includes('durasi')
+            ) {
+                removeIdx.push(i);
+            }
         });
 
-        const box = document.createElement('div');
-        box.id = 'temp-print-container';
-        box.innerHTML = `
+        const container = document.createElement('div');
+        container.id = 'temp-print-container';
+
+        container.innerHTML = `
             <div style="margin-bottom:10px;">
                 <div style="font-size:20px;font-weight:600;">Antrian Farmasi</div>
-                <div style="font-size:14px;">Printed: ${new Date().toLocaleString()}<br>
-                Total Rows: ${selected.length}</div>
-            </div><hr>
+                <div style="font-size:14px;">
+                    Printed: ${new Date().toLocaleString()}<br>
+                    Total Rows: ${selected.length}
+                </div>
+            </div>
+            <hr>
         `;
 
         const pTable = document.createElement('table');
@@ -282,23 +326,29 @@
 
         const thead = document.createElement('thead');
         const htr = document.createElement('tr');
+
         table.querySelectorAll('thead th').forEach((th, i) => {
-            if (!removeIdx.includes(i)) htr.appendChild(th.cloneNode(true));
+            if (!removeIdx.includes(i)) {
+                htr.appendChild(th.cloneNode(true));
+            }
         });
+
         thead.appendChild(htr);
 
         const tbody = document.createElement('tbody');
         selected.forEach(tr => {
             const r = document.createElement('tr');
             tr.querySelectorAll('td').forEach((td, i) => {
-                if (!removeIdx.includes(i)) r.appendChild(td.cloneNode(true));
+                if (!removeIdx.includes(i)) {
+                    r.appendChild(td.cloneNode(true));
+                }
             });
             tbody.appendChild(r);
         });
 
         pTable.append(thead, tbody);
-        box.appendChild(pTable);
-        document.body.appendChild(box);
+        container.appendChild(pTable);
+        document.body.appendChild(container);
 
         const ps = document.createElement('style');
         ps.innerHTML = `
@@ -307,15 +357,22 @@
                 #temp-print-container,
                 #temp-print-container * { visibility:visible!important; }
                 #temp-print-container {
-                    position:absolute;top:0;left:0;width:100%;
+                    position:absolute;
+                    top:0;
+                    left:0;
+                    width:100%;
                 }
-                th,td { border:1px solid #000;padding:4px; }
+                th, td {
+                    border:1px solid #000;
+                    padding:4px;
+                }
             }
         `;
         document.head.appendChild(ps);
 
         window.print();
+
         ps.remove();
-        box.remove();
+        container.remove();
     }
 })();
