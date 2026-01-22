@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Antrian Farmasi Printing
 // @namespace    http://rsupkandou.com
-// @version      2026-01-21
+// @version      2026-01-22
 // @description  Script for filtering, sort and printing from Antrian Farmasi page
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/monitoring/antrian/*
@@ -17,17 +17,14 @@
 (function () {
     'use strict';
 
-    /* ================= STATE ================= */
-
     let toggleActive = false;
-
     let fontSize = Number(localStorage.getItem('antrianFontSize')) || 14;
-    let activeFilter = localStorage.getItem('antrianFilter') || null;
+    let activeFilters = new Set(
+        JSON.parse(localStorage.getItem('antrianFilters') || '[]')
+    );
     let sortState = JSON.parse(localStorage.getItem('antrianSort') || 'null');
 
     const ACTIVE_COLOR = '#00ddbf';
-
-    /* ================= STYLES ================= */
 
     const style = document.createElement('style');
     style.innerHTML = `
@@ -47,27 +44,40 @@
             padding:0 4px;
             font-size:12px;
         }
-        .sort-btn.active {
-            color:${ACTIVE_COLOR};
+
+        /* ===== PRINT ONLY ===== */
+        @media print {
+            .print-rj {
+                font-size:38pt !important;
+                font-weight:800 !important;
+                line-height:1.1 !important;
+                white-space:nowrap !important;
+            }
+
+            .print-nama {
+                font-size:19pt !important;
+                font-weight:500 !important;
+            }
+
+            .print-no {
+                font-size:19pt !important;
+                width:1% !important;
+                white-space:nowrap !important;
+                text-align:center !important;
+            }
         }
     `;
     document.head.appendChild(style);
 
-    /* ================= OBSERVER ================= */
-
     const observer = new MutationObserver(() => {
         const table = document.querySelector('#tabel_antrian_farmasi table');
         const col12 = document.querySelector('.col-12');
-
         if (table && col12 && !document.getElementById('togglePrintBtn')) {
             injectUI(col12);
             enhanceTable();
         }
     });
-
     observer.observe(document.body, { childList: true, subtree: true });
-
-    /* ================= UI ================= */
 
     function injectUI(container) {
         const wrap = document.createElement('div');
@@ -92,32 +102,14 @@
         const khususBtn = filterBtn('Khusus', 'B', 'yellow-button');
         const citoBtn = filterBtn('CITO', 'C', 'red-button');
 
-        const selectAllBtn = btn(
-            'Select ALL Visible Rows',
-            'btn btn-outline-light btn-sm',
-            selectAllVisible
-        );
-        const deselectBtn = btn(
-            'Deselect All',
-            'btn btn-outline-light btn-sm',
-            deselectAll
-        );
+        const selectAllBtn = btn('Select ALL Visible Rows','btn btn-outline-light btn-sm',selectAllVisible);
+        const deselectBtn = btn('Deselect All','btn btn-outline-light btn-sm',deselectAll);
 
-        const fontDown = btn('A−', 'btn btn-secondary btn-sm', () => changeFont(-1));
-        const fontUp = btn('A+', 'btn btn-secondary btn-sm', () => changeFont(1));
-        const fontReset = btn('Reset Font', 'btn btn-secondary btn-sm', resetFont);
+        const fontDown = btn('A−','btn btn-secondary btn-sm',()=>changeFont(-1));
+        const fontUp = btn('A+','btn btn-secondary btn-sm',()=>changeFont(1));
+        const fontReset = btn('Reset Font','btn btn-secondary btn-sm',resetFont);
 
-        tools.append(
-            fontDown,
-            fontUp,
-            fontReset,
-            regulerBtn,
-            khususBtn,
-            citoBtn,
-            selectAllBtn,
-            deselectBtn
-        );
-
+        tools.append(fontDown,fontUp,fontReset,regulerBtn,khususBtn,citoBtn,selectAllBtn,deselectBtn);
         wrap.append(toggleBtn, printBtn, tools);
         container.prepend(wrap);
 
@@ -137,14 +129,12 @@
 
     function filterBtn(label, suffix, color) {
         return btn(label, `btn ${color} btn_cetak_antrian btn-sm`, () => {
-            activeFilter = activeFilter === suffix ? null : suffix;
-            localStorage.setItem('antrianFilter', activeFilter || '');
+            activeFilters.has(suffix) ? activeFilters.delete(suffix) : activeFilters.add(suffix);
+            localStorage.setItem('antrianFilters', JSON.stringify([...activeFilters]));
             applyFilter();
             updateFilterButtons();
         });
     }
-
-    /* ================= TOGGLE ================= */
 
     function togglePrint() {
         toggleActive = !toggleActive;
@@ -153,8 +143,6 @@
         wrap._printBtn.style.display = toggleActive ? '' : 'none';
         wrap._tools.style.display = toggleActive ? '' : 'none';
     }
-
-    /* ================= TABLE ================= */
 
     function enhanceTable() {
         applyFont();
@@ -169,40 +157,31 @@
         document.querySelectorAll('#tabel_antrian_farmasi tbody tr').forEach(tr => {
             if (tr.dataset.sel) return;
             tr.dataset.sel = '1';
-            tr.style.cursor = 'pointer';
-            tr.onclick = () => {
-                if (!toggleActive) return;
-                tr.classList.toggle('selected-print-row');
-            };
+            tr.onclick = () => toggleActive && tr.classList.toggle('selected-print-row');
         });
     }
-
-    /* ================= FILTER ================= */
 
     function applyFilter() {
         document.querySelectorAll('#tabel_antrian_farmasi tbody tr').forEach(tr => {
             const code = tr.querySelector('td:nth-child(2)')?.innerText.trim();
             tr.style.display =
-                !activeFilter || code?.endsWith(activeFilter) ? '' : 'none';
+                !activeFilters.size || [...activeFilters].some(s => code?.endsWith(s))
+                    ? ''
+                    : 'none';
         });
     }
 
     function updateFilterButtons() {
         const wrap = document.querySelector('.col-12')?.firstChild;
         if (!wrap) return;
-
-        Object.entries(wrap._filterBtns).forEach(([key, btn]) => {
-            const suffix = key === 'regulerBtn' ? 'A' : key === 'khususBtn' ? 'B' : 'C';
-            btn.classList.toggle('btn-active-custom', activeFilter === suffix);
-        });
+        wrap._filterBtns.regulerBtn.classList.toggle('btn-active-custom', activeFilters.has('A'));
+        wrap._filterBtns.khususBtn.classList.toggle('btn-active-custom', activeFilters.has('B'));
+        wrap._filterBtns.citoBtn.classList.toggle('btn-active-custom', activeFilters.has('C'));
     }
 
-    /* ================= FONT ================= */
-
     function applyFont() {
-        document
-            .querySelectorAll('#tabel_antrian_farmasi tbody tr')
-            .forEach(tr => (tr.style.fontSize = fontSize + 'px'));
+        document.querySelectorAll('#tabel_antrian_farmasi tbody tr')
+            .forEach(tr => tr.style.fontSize = fontSize + 'px');
     }
 
     function changeFont(delta) {
@@ -217,12 +196,9 @@
         applyFont();
     }
 
-    /* ================= SORT ================= */
-
     function injectSortButtons() {
         document.querySelectorAll('#tabel_antrian_farmasi thead th').forEach((th, i) => {
             if (th.querySelector('.sort-btn')) return;
-
             const sb = document.createElement('button');
             sb.className = 'sort-btn';
             sb.innerHTML = '▲▼';
@@ -232,121 +208,78 @@
     }
 
     function toggleSort(col) {
-        sortState =
-            sortState?.col === col
-                ? { col, dir: sortState.dir === 'asc' ? 'desc' : 'asc' }
-                : { col, dir: 'asc' };
-
+        sortState = sortState?.col === col
+            ? { col, dir: sortState.dir === 'asc' ? 'desc' : 'asc' }
+            : { col, dir: 'asc' };
         localStorage.setItem('antrianSort', JSON.stringify(sortState));
         applySort();
     }
 
     function applySort() {
         if (!sortState) return;
-
         const tbody = document.querySelector('#tabel_antrian_farmasi tbody');
-        const rows = [...tbody.querySelectorAll('tr')];
-
-        rows.sort((a, b) => {
-            const A = a.children[sortState.col]?.innerText || '';
-            const B = b.children[sortState.col]?.innerText || '';
-            return sortState.dir === 'asc'
-                ? A.localeCompare(B, undefined, { numeric: true })
-                : B.localeCompare(A, undefined, { numeric: true });
-        });
-
-        rows.forEach(r => tbody.appendChild(r));
+        [...tbody.querySelectorAll('tr')]
+            .sort((a,b)=>sortState.dir==='asc'
+                ? a.children[sortState.col].innerText.localeCompare(b.children[sortState.col].innerText,undefined,{numeric:true})
+                : b.children[sortState.col].innerText.localeCompare(a.children[sortState.col].innerText,undefined,{numeric:true})
+            ).forEach(r=>tbody.appendChild(r));
     }
 
-    /* ================= SELECT ================= */
-
     function selectAllVisible() {
-        document
-            .querySelectorAll('#tabel_antrian_farmasi tbody tr')
-            .forEach(tr => {
-                if (tr.style.display !== 'none') {
-                    tr.classList.add('selected-print-row');
-                }
-            });
+        document.querySelectorAll('#tabel_antrian_farmasi tbody tr')
+            .forEach(tr => tr.style.display !== 'none' && tr.classList.add('selected-print-row'));
     }
 
     function deselectAll() {
-        document
-            .querySelectorAll('.selected-print-row')
+        document.querySelectorAll('.selected-print-row')
             .forEach(tr => tr.classList.remove('selected-print-row'));
     }
-
-    /* ================= PRINT ================= */
 
     function printSelected() {
         const table = document.querySelector('#tabel_antrian_farmasi table');
         const selected = table.querySelectorAll('tbody tr.selected-print-row');
+        if (!selected.length) return alert('No rows selected.');
 
-        if (!selected.length) {
-            alert('No rows selected.');
-            return;
-        }
-
-        /* === ROBUST COLUMN REMOVAL === */
         const removeIdx = [];
-        table.querySelectorAll('thead th').forEach((th, i) => {
-            const text = th.innerText
-                .toLowerCase()
-                .replace(/\s+/g, '');
-
-            if (
-                text.includes('status') ||
-                text.includes('mulai') ||
-                text.includes('estimasi') ||
-                text.includes('selesai') ||
-                text.includes('durasi')
-            ) {
-                removeIdx.push(i);
-            }
+        table.querySelectorAll('thead th').forEach((th,i)=>{
+            const t = th.innerText.toLowerCase();
+            if (/(status|mulai|estimasi|selesai|durasi)/.test(t)) removeIdx.push(i);
         });
 
         const container = document.createElement('div');
         container.id = 'temp-print-container';
-
-        container.innerHTML = `
-            <div style="margin-bottom:10px;">
-                <div style="font-size:20px;font-weight:600;">Antrian Farmasi</div>
-                <div style="font-size:14px;">
-                    Printed: ${new Date().toLocaleString()}<br>
-                    Total Rows: ${selected.length}
-                </div>
-            </div>
-            <hr>
-        `;
+        container.innerHTML = `<div style="font-size:28pt;font-weight:800;margin-bottom:12px;">Antrian Farmasi</div>`;
 
         const pTable = document.createElement('table');
         pTable.style.width = '100%';
         pTable.style.borderCollapse = 'collapse';
-        pTable.style.fontSize = fontSize + 'px';
 
         const thead = document.createElement('thead');
         const htr = document.createElement('tr');
-
-        table.querySelectorAll('thead th').forEach((th, i) => {
-            if (!removeIdx.includes(i)) {
-                htr.appendChild(th.cloneNode(true));
-            }
+        table.querySelectorAll('thead th').forEach((th,i)=>{
+            if(!removeIdx.includes(i)) htr.appendChild(th.cloneNode(true));
         });
-
         thead.appendChild(htr);
 
         const tbody = document.createElement('tbody');
-        selected.forEach(tr => {
+        selected.forEach(tr=>{
             const r = document.createElement('tr');
-            tr.querySelectorAll('td').forEach((td, i) => {
-                if (!removeIdx.includes(i)) {
-                    r.appendChild(td.cloneNode(true));
+            tr.querySelectorAll('td').forEach((td,i)=>{
+                if(!removeIdx.includes(i)){
+                    const c = td.cloneNode(true);
+                    const txt = c.innerText.trim();
+
+                    if (/^RJ/i.test(txt)) c.classList.add('print-rj');
+                    else if (i === 0) c.classList.add('print-no');
+                    else c.classList.add('print-nama');
+
+                    r.appendChild(c);
                 }
             });
             tbody.appendChild(r);
         });
 
-        pTable.append(thead, tbody);
+        pTable.append(thead,tbody);
         container.appendChild(pTable);
         document.body.appendChild(container);
 
@@ -354,24 +287,14 @@
         ps.innerHTML = `
             @media print {
                 body * { visibility:hidden!important; }
-                #temp-print-container,
-                #temp-print-container * { visibility:visible!important; }
-                #temp-print-container {
-                    position:absolute;
-                    top:0;
-                    left:0;
-                    width:100%;
-                }
-                th, td {
-                    border:1px solid #000;
-                    padding:4px;
-                }
+                #temp-print-container, #temp-print-container * { visibility:visible!important; }
+                #temp-print-container { position:absolute; top:0; left:0; width:100%; }
+                th, td { border:1px solid #000; padding:6px; }
             }
         `;
         document.head.appendChild(ps);
 
         window.print();
-
         ps.remove();
         container.remove();
     }
