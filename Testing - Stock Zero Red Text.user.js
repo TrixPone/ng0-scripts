@@ -7,8 +7,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @match        */spa-farmasi*
 // @grant        none
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Stock%20Zero%20Red%20Text.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Stock%20Zero%20Red%20Text.user.js
 // ==/UserScript==
 
 // THIS SCRIPT IS FULLY MADE WITH AI
