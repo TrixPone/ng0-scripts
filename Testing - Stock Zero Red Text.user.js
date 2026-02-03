@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Stock Zero Red Text
+// @name         Testing - Stock Zero Red Text
 // @namespace    http://rsupkandou.com
 // @version      2026-02-03
 // @description  Script for highlighting zero stock with bright red
