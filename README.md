@@ -117,6 +117,7 @@ Script for filtering, sort and printing from Antrian Farmasi page
 
 # 15. Stock Zero Red Text
 Highlight zero stock with bright red coloring
+
 <img width="408" height="298" alt="image" src="https://github.com/user-attachments/assets/58cffadb-233b-4226-8185-b10e22211b87" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Stock%20Zero%20Red%20Text.user.js)
