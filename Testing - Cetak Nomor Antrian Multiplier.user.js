@@ -13,6 +13,9 @@
 
     const CLICK_DELAY = 300;
     let multiplier = 1;
+    let statusEl = null;
+    let stopBtn = null;
+    let stopRequested = false;
 
     function waitForButtons() {
         const buttons = document.querySelectorAll('.btn_cetak_antrian');
@@ -44,22 +47,54 @@
             <div style="margin-bottom:6px;font-weight:bold;">
                 Jumlah Cetak
             </div>
-            <label style="margin:0 10px;cursor:pointer;">
+            <label style="margin:0 8px;cursor:pointer;">
                 <input type="radio" name="cetak_multiplier" value="1" checked> 1×
             </label>
-            <label style="margin:0 10px;cursor:pointer;">
+            <label style="margin:0 8px;cursor:pointer;">
                 <input type="radio" name="cetak_multiplier" value="5"> 5×
             </label>
-            <label style="margin:0 10px;cursor:pointer;">
+            <label style="margin:0 8px;cursor:pointer;">
                 <input type="radio" name="cetak_multiplier" value="10"> 10×
             </label>
+            <label style="margin:0 8px;cursor:pointer;">
+                <input type="radio" name="cetak_multiplier" value="50"> 50×
+            </label>
+
+            <div id="cetak-status" style="margin-top:8px;font-size:13px;color:#aaa;">
+                Ready
+            </div>
+
+            <button id="cetak-stop"
+                style="
+                    display:none;
+                    margin-top:6px;
+                    padding:4px 10px;
+                    font-size:12px;
+                    background:#a00;
+                    color:#fff;
+                    border:none;
+                    border-radius:4px;
+                    cursor:pointer;
+                ">
+                STOP PRINTING
+            </button>
         `;
 
         referenceButton.closest('.custom-border').appendChild(container);
 
+        statusEl = container.querySelector('#cetak-status');
+        stopBtn = container.querySelector('#cetak-stop');
+
+        stopBtn.addEventListener('click', () => {
+            stopRequested = true;
+            statusEl.textContent = 'Stopped ⛔';
+            stopBtn.style.display = 'none';
+        });
+
         container.querySelectorAll('input[name="cetak_multiplier"]').forEach(radio => {
             radio.addEventListener('change', () => {
                 multiplier = parseInt(radio.value, 10);
+                statusEl.textContent = 'Ready';
             });
         });
     }
@@ -71,12 +106,31 @@
                 // ignore programmatic clicks
                 if (e.__multiplied) return;
 
-                // first click is NORMAL — site handles it
                 if (multiplier <= 1) return;
 
-                // schedule extra clicks
+                if (multiplier >= 50) {
+                    const ok = confirm(
+                        `YAKIN BRO?\n\nIni bakal cetak ${multiplier} kali.\n\nLanjut?`
+                    );
+                    if (!ok) {
+                        statusEl.textContent = 'Cancelled';
+                        return;
+                    }
+                }
+
+                stopRequested = false;
+                stopBtn.style.display = 'inline-block';
+
+                let printed = 1;
+                statusEl.textContent = `Printing ${printed} / ${multiplier}`;
+
                 for (let i = 1; i < multiplier; i++) {
                     setTimeout(() => {
+                        if (stopRequested) return;
+
+                        printed++;
+                        statusEl.textContent = `Printing ${printed} / ${multiplier}`;
+
                         const evt = new MouseEvent('click', {
                             bubbles: true,
                             cancelable: true,
@@ -84,10 +138,17 @@
                         });
                         evt.__multiplied = true;
                         btn.dispatchEvent(evt);
+
+                        if (printed === multiplier) {
+                            stopBtn.style.display = 'none';
+                            setTimeout(() => {
+                                statusEl.textContent = 'Done ✔';
+                            }, 400);
+                        }
                     }, i * CLICK_DELAY);
                 }
 
-            }, false); // <-- NOT capture
+            }, false);
         });
     }
 
