@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Stock Zero Red Text
 // @namespace    http://rsupkandou.com
-// @version      2026-02-03
+// @version      2026-02-05
 // @description  Script for highlighting zero stock with bright red
 // @author       TrixPone
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
@@ -16,27 +16,59 @@
 (function () {
     'use strict';
 
-    function styleZeroStock() {
+    // 🟣 Hardcoded keywords (case-insensitive)
+    const MAGENTA_KEYWORDS = [
+        'UREA',
+        'KLORO'
+    ];
+
+    function styleItems() {
         document.querySelectorAll(
             '.selectize-dropdown-content div[data-selectable]'
         ).forEach(el => {
 
-            if (el.dataset.zeroStyled) return;
+            if (el.dataset.styled) return;
 
-            const isZero =
-                /\(0\)\s*$/.test(el.textContent.trim()) ||
-                (el.dataset.value && el.dataset.value.endsWith('@0'));
+            const originalHTML = el.innerHTML;
+            const text = el.textContent;
+            const value = el.dataset.value || '';
 
-            if (isZero) {
-                el.dataset.zeroStyled = 'true';
-                el.style.color = '#ff0000'; // bright red
+            // 🔴 Zero stock — HIGHEST PRIORITY (entire entry red)
+            const isZeroStock =
+                /\(0\)\s*$/.test(text.trim()) ||
+                value.endsWith('@0');
+
+            if (isZeroStock) {
+                el.style.color = '#ff0000';
+                el.dataset.styled = 'zero';
+                return;
+            }
+
+            // 🟣 Keyword match — partial text only
+            let newHTML = originalHTML;
+            let matched = false;
+
+            MAGENTA_KEYWORDS.forEach(keyword => {
+                const regex = new RegExp(`(${keyword})`, 'gi');
+                if (regex.test(newHTML)) {
+                    matched = true;
+                    newHTML = newHTML.replace(
+                        regex,
+                        `<span style="color:#FF00FF;">$1</span>`
+                    );
+                }
+            });
+
+            if (matched) {
+                el.innerHTML = newHTML;
+                el.dataset.styled = 'keyword';
             }
         });
     }
 
-    styleZeroStock();
+    styleItems();
 
-    const observer = new MutationObserver(styleZeroStock);
+    const observer = new MutationObserver(styleItems);
     observer.observe(document.body, {
         childList: true,
         subtree: true
