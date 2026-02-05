@@ -123,7 +123,7 @@ Highlight zero stock with bright red coloring
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Stock%20Zero%20Red%20Text.user.js)
 
 
-# 15. Obat Tidak Ada Highlighting
+# 16. Obat Tidak Ada Highlighting
 Highlight Obat Tidak Ada (with its respective qty) bright red
 
 <img width="1265" height="130" alt="image" src="https://github.com/user-attachments/assets/8246115c-ef92-4d80-a6c2-52930b56caf8" />
