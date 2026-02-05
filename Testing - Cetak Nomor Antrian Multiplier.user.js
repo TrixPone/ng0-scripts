@@ -11,18 +11,18 @@
 (function () {
     'use strict';
 
-    const CLICK_DELAY = 300; // ms between each print click
+    const CLICK_DELAY = 300;
     let multiplier = 1;
 
     function waitForButtons() {
         const buttons = document.querySelectorAll('.btn_cetak_antrian');
-        if (buttons.length === 0) {
+        if (!buttons.length) {
             setTimeout(waitForButtons, 500);
             return;
         }
 
         injectMultiplierUI(buttons[0]);
-        overrideButtonClicks(buttons);
+        attachHandlers(buttons);
     }
 
     function injectMultiplierUI(referenceButton) {
@@ -64,27 +64,30 @@
         });
     }
 
-    function overrideButtonClicks(buttons) {
+    function attachHandlers(buttons) {
         buttons.forEach(btn => {
             btn.addEventListener('click', function (e) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
 
-                let count = 0;
+                // ignore programmatic clicks
+                if (e.__multiplied) return;
 
-                const clickLoop = () => {
-                    if (count >= multiplier) return;
-                    count++;
-                    btn.dispatchEvent(new MouseEvent('click', {
-                        bubbles: true,
-                        cancelable: true,
-                        view: window
-                    }));
-                    setTimeout(clickLoop, CLICK_DELAY);
-                };
+                // first click is NORMAL — site handles it
+                if (multiplier <= 1) return;
 
-                clickLoop();
-            }, true);
+                // schedule extra clicks
+                for (let i = 1; i < multiplier; i++) {
+                    setTimeout(() => {
+                        const evt = new MouseEvent('click', {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window
+                        });
+                        evt.__multiplied = true;
+                        btn.dispatchEvent(evt);
+                    }, i * CLICK_DELAY);
+                }
+
+            }, false); // <-- NOT capture
         });
     }
 
