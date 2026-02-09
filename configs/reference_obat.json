@@ -30,17 +30,17 @@
   },
 
   "Amlodipin_5": {
-    "label": "Amlodipin 5 mg",
+    "label": "Amlodipin",
     "aliases": ["Amlodipin 5 mg"],
     "kronis": "Max 30 tablet",
     "mingguan": "",
-    "badge": "badge badge-primary badge-success"
+    "subbadge": { "text": "5 mg", "class": "badge badge-primary badge-success" }
   },
   "Amlodipin_10": {
-    "label": "Amlodipin 10 mg",
+    "label": "Amlodipin",
     "aliases": ["Amlodipin 10 mg"],
     "kronis": "Max 30 tablet",
     "mingguan": "",
-    "badge": "badge badge-primary badge-danger"
+    "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-danger" }
   }
 }
