@@ -2,27 +2,40 @@
   "Parasetamol": {
     "label": "Parasetamol",
     "aliases": ["Parasetamol"],
-    "kronis": "Max 15 tablet",
-    "mingguan": "Max 7 tablet"
+    "subitems": [
+      {
+        "formulation": "Parasetamol",
+        "kronis": "Max 15 tablet",
+        "mingguan": "Max 7 tablet"
+      }
+    ]
   },
+
   "Omeprazol": {
     "label": "Omeprazol",
     "aliases": ["Omeprazol"],
-    "kronis": "Max 30 kapsul",
-    "mingguan": "7 kapsul, kecuali GERD : 14 kapsul"
-  },
-  "Mesalazin": {
-    "label": "Mesalazin",
     "subitems": [
       {
-        "formulation": "Pentasa",
+        "formulation": "Omeprazol",
+        "kronis": "Max 30 kapsul",
+        "mingguan": "7 kapsul, kecuali GERD : 14 kapsul"
+      }
+    ]
+  },
+
+  "Mesalazin": {
+    "label": "Mesalazin",
+    "aliases": ["Mesalazin"],
+    "subitems": [
+      {
+        "formulation": "Mesalazin / Pentasa",
         "aliases": ["Mesalazin", "Pentasa"],
         "kronis": "Sesuai indikasi",
         "mingguan": "Perlu perhatian khusus",
         "rm_whitelist": ["00758104","00789505","00818359"]
       },
       {
-        "formulation": "Salofalk",
+        "formulation": "Mesalazin / Salofalk",
         "aliases": ["Mesalazin", "Salofalk"],
         "kronis": "Sesuai indikasi",
         "mingguan": "Perlu perhatian khusus",
@@ -30,21 +43,21 @@
       }
     ]
   },
+
   "Amlodipin": {
     "label": "Amlodipin",
+    "aliases": ["Amlodipin"],
     "subitems": [
       {
-        "formulation": "5 mg",
+        "formulation": "Amlodipin 5 mg",
         "aliases": ["Amlodipin", "5 mg"],
         "kronis": "Max 30 tablet",
-        "mingguan": "",
         "subbadge": { "text": "5 mg", "class": "badge badge-primary badge-success" }
       },
       {
-        "formulation": "10 mg",
+        "formulation": "Amlodipin 10 mg",
         "aliases": ["Amlodipin", "10 mg"],
         "kronis": "Max 30 tablet",
-        "mingguan": "",
         "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-danger" }
       }
     ]
