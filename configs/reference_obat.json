@@ -31,14 +31,14 @@
 
   "Amlodipin_5": {
     "label": "Amlodipin",
-    "aliases": ["Amlodipin 5 mg"],
+    "aliases": ["Amlodipin", "5 mg"],
     "kronis": "Max 30 tablet",
     "mingguan": "",
     "subbadge": { "text": "5 mg", "class": "badge badge-primary badge-success" }
   },
   "Amlodipin_10": {
     "label": "Amlodipin",
-    "aliases": ["Amlodipin 10 mg"],
+    "aliases": ["Amlodipin", "10 mg"],
     "kronis": "Max 30 tablet",
     "mingguan": "",
     "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-danger" }
