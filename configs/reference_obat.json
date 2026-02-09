@@ -18,11 +18,7 @@
     "aliases": ["Mesalazin", "Pentasa"],
     "kronis": "Sesuai indikasi",
     "mingguan": "Perlu perhatian khusus",
-    "rm_whitelist": "
-      00758104
-      00789505,
-      00818359
-    "
+    "rm_whitelist": "00758104\n00789505\n00818359"
   },
 
   "Mesalazin_Salofalk": {
@@ -30,9 +26,6 @@
     "aliases": ["Mesalazin", "Salofalk"],
     "kronis": "Sesuai indikasi",
     "mingguan": "Perlu perhatian khusus",
-    "rm_whitelist": "
-      00900123
-      00900456
-    "
+    "rm_whitelist": "00900123\n00900456"
   }
 }
