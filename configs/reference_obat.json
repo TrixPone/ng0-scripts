@@ -1,59 +1,48 @@
 {
   "Parasetamol": {
     "label": "Parasetamol",
-    "subitems": [
-      {
-        "aliases": ["Parasetamol"],
-        "kronis": "Max 15 tablet",
-        "mingguan": "Max 7 tablet"
-      }
-    ]
+    "aliases": ["Parasetamol"],
+    "kronis": "Max 15 tablet",
+    "mingguan": "Max 7 tablet"
   },
-
   "Omeprazol": {
     "label": "Omeprazol",
-    "subitems": [
-      {
-        "aliases": ["Omeprazol"],
-        "kronis": "Max 30 kapsul",
-        "mingguan": "7 kapsul, kecuali GERD : 14 kapsul"
-      }
-    ]
+    "aliases": ["Omeprazol"],
+    "kronis": "Max 30 kapsul",
+    "mingguan": "7 kapsul, kecuali GERD : 14 kapsul"
   },
-
   "Mesalazin": {
     "label": "Mesalazin",
     "subitems": [
       {
-        "aliases": ["Mesalazin", "Pentasa"],
         "formulation": "Pentasa",
+        "aliases": ["Mesalazin", "Pentasa"],
         "kronis": "Sesuai indikasi",
         "mingguan": "Perlu perhatian khusus",
         "rm_whitelist": ["00758104","00789505","00818359"]
       },
       {
-        "aliases": ["Mesalazin", "Salofalk"],
         "formulation": "Salofalk",
+        "aliases": ["Mesalazin", "Salofalk"],
         "kronis": "Sesuai indikasi",
         "mingguan": "Perlu perhatian khusus",
         "rm_whitelist": ["00900123","00802236"]
       }
     ]
   },
-
   "Amlodipin": {
     "label": "Amlodipin",
     "subitems": [
       {
-        "aliases": ["Amlodipin", "5 mg"],
         "formulation": "5 mg",
+        "aliases": ["Amlodipin", "5 mg"],
         "kronis": "Max 30 tablet",
         "mingguan": "",
         "subbadge": { "text": "5 mg", "class": "badge badge-primary badge-success" }
       },
       {
-        "aliases": ["Amlodipin", "10 mg"],
         "formulation": "10 mg",
+        "aliases": ["Amlodipin", "10 mg"],
         "kronis": "Max 30 tablet",
         "mingguan": "",
         "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-danger" }
