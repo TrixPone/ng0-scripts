@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Cetak Nomor Antrian Multiplier
 // @namespace    http://rsupkandou.com
-// @version      2026-02-05
+// @version      2026-02-09
 // @description  Add print multiplier (1x, 5x, 10x) to CETAK buttons
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/monitoring/antrian/*
@@ -11,7 +11,7 @@
 (function () {
     'use strict';
 
-    const CLICK_DELAY = 300;
+    const CLICK_DELAY = 2000; // ⏱️ BIG delay to prevent out-of-order printing
     let multiplier = 1;
     let statusEl = null;
     let stopBtn = null;
@@ -103,9 +103,7 @@
         buttons.forEach(btn => {
             btn.addEventListener('click', function (e) {
 
-                // ignore programmatic clicks
                 if (e.__multiplied) return;
-
                 if (multiplier <= 1) return;
 
                 if (multiplier >= 50) {
@@ -143,7 +141,7 @@
                             stopBtn.style.display = 'none';
                             setTimeout(() => {
                                 statusEl.textContent = 'Done ✔';
-                            }, 400);
+                            }, 500);
                         }
                     }, i * CLICK_DELAY);
                 }
