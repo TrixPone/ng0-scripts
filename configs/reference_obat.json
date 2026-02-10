@@ -108,5 +108,16 @@
         "mingguan": "Max 10 tablet"
       }
     ]
-  }
+  },
+  "Vitamin B-kompleks": {
+  "label": "Vitamin B-kompleks",
+  "aliases": ["Vitamin", "Vitamin B", "B-kompleks", "Kompleks"],
+  "subitems": [
+    {
+      "formulation": "Vitamin B-kompleks",
+      "kronis": "Max 30 tablet",
+      "mingguan": "Max 7 tablet"
+    }
+  ]
+}
 }
