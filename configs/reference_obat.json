@@ -6,7 +6,7 @@
       {
         "formulation": "Parasetamol",
         "kronis": "~15 tablet",
-        "mingguan": "~7 tablet"
+        "mingguan": "~10 tablet"
       }
     ]
   },
@@ -266,6 +266,29 @@
       {
         "formulation": "Levetirasetam",
         "kronis": "Max 180 tablet"
+      }
+    ]
+  },
+
+  "Klobazam": {
+    "label": "Klobazam",
+    "aliases": ["Klobazam", "Clobazam"],
+    "subitems": [
+      {
+        "formulation": "Klobazam",
+        "kronis": "Max 60 tablet"
+      }
+    ]
+  },
+
+  "Hidroksi Urea": {
+    "label": "Hidroksi Urea",
+    "aliases": ["Hidroksi Urea", "Hydroxyurea"],
+    "subitems": [
+      {
+        "formulation": "Hidroksi Urea",
+        "kronis": "Dx: CML (Chronic Myeloid Leukemia)",
+        "mingguan": "Dx: PV (Polisitemia Vera)"
       }
     ]
   }
