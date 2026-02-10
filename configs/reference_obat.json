@@ -81,6 +81,37 @@
     ]
   },
 
+  "Glimepirid": {
+    "label": "Glimepirid",
+    "aliases": ["Glimepirid"],
+    "subitems": [
+      {
+        "formulation": "Glimepirid 1 mg",
+        "aliases": ["Glimepirid", "1 mg"],
+        "kronis": "Max 60 tablet",
+        "subbadge": { "text": "1 mg", "class": "badge badge-primary badge-success" }
+      },
+      {
+        "formulation": "Glimepirid 2 mg",
+        "aliases": ["Glimepirid", "2 mg"],
+        "kronis": "Max 60 tablet",
+        "subbadge": { "text": "2 mg", "class": "badge badge-primary badge-success" }
+      },
+      {
+        "formulation": "Glimepirid 3 mg",
+        "aliases": ["Glimepirid", "3 mg"],
+        "kronis": "Max 60 tablet",
+        "subbadge": { "text": "3 mg", "class": "badge badge-primary badge-success" }
+      },
+      {
+        "formulation": "Glimepirid 4 mg",
+        "aliases": ["Glimepirid", "4 mg"],
+        "kronis": "Max 60 tablet",
+        "subbadge": { "text": "4 mg", "class": "badge badge-primary badge-warning" }
+      }
+    ]
+  },
+
   "Alopurinol": {
     "label": "Alopurinol",
     "aliases": ["Alopurinol", "Allopurinol"],
@@ -147,6 +178,30 @@
         "formulation": "Vitamin B12",
         "kronis": "Max 30 tablet",
         "mingguan": "Max 7 tablet"
+      }
+    ]
+  },
+
+  "Vitamin B-Kompleks": {
+    "label": "Vitamin B-Kompleks",
+    "aliases": ["Vitamin B-Kompleks", "Vitamin", "Kompleks"],
+    "subitems": [
+      {
+        "formulation": "Vitamin B-Kompleks",
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 7 tablet"
+      }
+    ]
+  },
+
+  "Asetilsistein": {
+    "label": "Asetilsistein",
+    "aliases": ["Asetilsistein", "NAC"],
+    "subitems": [
+      {
+        "formulation": "Asetilsistein",
+        "kronis": "10 kapsul per kasus",
+        "mingguan": "10 kapsul per kasus"
       }
     ]
   },
