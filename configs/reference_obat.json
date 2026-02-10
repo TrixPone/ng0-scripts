@@ -32,14 +32,14 @@
         "aliases": ["Mesalazin", "Pentasa"],
         "kronis": "Sesuai indikasi",
         "mingguan": "Perlu perhatian khusus",
-        "rm_whitelist": ["00758104","00789505","00818359"]
+        "rm_whitelist": ["00758104", "00789505", "00818359"]
       },
       {
         "formulation": "Mesalazin / Salofalk",
         "aliases": ["Mesalazin", "Salofalk"],
         "kronis": "Sesuai indikasi",
         "mingguan": "Perlu perhatian khusus",
-        "rm_whitelist": ["00900123","00802236"]
+        "rm_whitelist": ["00900123", "00802236"]
       }
     ]
   },
@@ -59,6 +59,53 @@
         "aliases": ["Amlodipin", "10 mg"],
         "kronis": "Max 30 tablet",
         "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-danger" }
+      }
+    ]
+  },
+
+  "Azatioprin": {
+    "label": "Azatioprin",
+    "aliases": ["Azatioprin"],
+    "subitems": [
+      {
+        "formulation": "Azatioprin",
+        "kronis": "Max 120 tablet"
+      }
+    ]
+  },
+
+  "Piridostigmin": {
+    "label": "Piridostigmin",
+    "aliases": ["Piridostigmin"],
+    "subitems": [
+      {
+        "formulation": "Piridostigmin",
+        "kronis": "Dx: Miastenia Gravis, Max 300 tablet",
+        "mingguan": "Dx: Miastenia Gravis"
+      }
+    ]
+  },
+
+  "Kandesartan": {
+    "label": "Kandesartan",
+    "aliases": ["Kandesartan"],
+    "subitems": [
+      {
+        "formulation": "Kandesartan",
+        "kronis": "Harus ada riwayat ACEi",
+        "mingguan": "Harus ada riwayat ACEi, Max 30 tablet"
+      }
+    ]
+  },
+
+  "Domperidone": {
+    "label": "Domperidone",
+    "aliases": ["Domperidone", "Domperidon"],
+    "subitems": [
+      {
+        "formulation": "Domperidone",
+        "kronis": "Max 10 tablet",
+        "mingguan": "Max 10 tablet"
       }
     ]
   }
