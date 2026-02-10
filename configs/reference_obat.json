@@ -63,116 +63,142 @@
     ]
   },
 
-  "Azatioprin": {
-    "label": "Azatioprin",
-    "aliases": ["Azatioprin"],
+  "Metformin": {
+    "label": "Metformin",
+    "aliases": ["Metformin"],
     "subitems": [
       {
-        "formulation": "Azatioprin",
+        "formulation": "Metformin 500 mg",
+        "aliases": ["Metformin", "500 mg"],
         "kronis": "Max 120 tablet"
-      }
-    ]
-  },
-
-  "Piridostigmin": {
-    "label": "Piridostigmin",
-    "aliases": ["Piridostigmin"],
-    "subitems": [
-      {
-        "formulation": "Piridostigmin",
-        "kronis": "Dx: Miastenia Gravis, Max 300 tablet",
-        "mingguan": "Dx: Miastenia Gravis"
-      }
-    ]
-  },
-
-  "Kandesartan": {
-    "label": "Kandesartan",
-    "aliases": ["Kandesartan"],
-    "subitems": [
-      {
-        "formulation": "Kandesartan",
-        "kronis": "Harus ada riwayat ACEi",
-        "mingguan": "Harus ada riwayat ACEi, Max 30 tablet"
-      }
-    ]
-  },
-
-  "Domperidone": {
-    "label": "Domperidone",
-    "aliases": ["Domperidone", "Domperidon"],
-    "subitems": [
-      {
-        "formulation": "Domperidone",
-        "kronis": "Max 10 tablet",
-        "mingguan": "Max 10 tablet"
-      }
-    ]
-  },
-
-  "Asetilsistein": {
-    "label": "Asetilsistein",
-    "aliases": ["Asetilsistein", "NAC"],
-    "subitems": [
-      {
-        "formulation": "Asetilsistein",
-        "kronis": "10 kapsul per kasus",
-        "mingguan": "10 kapsul per kasus"
-      }
-    ]
-  },
-
-  "Vitamin B-kompleks": {
-    "label": "Vitamin B-kompleks",
-    "aliases": ["Vitamin", "Vitamin B", "B-kompleks", "Kompleks"],
-    "subitems": [
-      {
-        "formulation": "Vitamin B-kompleks",
-        "kronis": "Max 30 tablet",
-        "mingguan": "Max 7 tablet"
-      }
-    ]
-  },
-
-  "Sulfasalazin": {
-    "label": "Sulfasalazin",
-    "aliases": ["Sulfasalazin"],
-    "subitems": [
-      {
-        "formulation": "Sulfasalazin",
-        "kronis": "Dx: Chondritis",
-        "mingguan": "Dx: Chondritis"
-      }
-    ]
-  },
-
-  "Ibuprofen": {
-    "label": "Ibuprofen",
-    "aliases": ["Ibuprofen"],
-    "subitems": [
-      {
-        "formulation": "Ibuprofen 200 mg",
-        "aliases": ["Ibuprofen", "200 mg"],
-        "kronis": "Max 30 tablet",
-        "mingguan": "Max 10 tablet"
       },
       {
-        "formulation": "Ibuprofen 400 mg",
-        "aliases": ["Ibuprofen", "400 mg"],
+        "formulation": "Metformin 850 mg",
+        "aliases": ["Metformin", "850 mg"],
         "kronis": "Max 60 tablet",
-        "mingguan": "Max 10 tablet"
+        "subbadge": { "text": "850 mg", "class": "badge badge-primary badge-danger" }
       }
     ]
   },
 
-  "Ranitidin": {
-    "label": "Ranitidin",
-    "aliases": ["Ranitidin"],
+  "Alopurinol": {
+    "label": "Alopurinol",
+    "aliases": ["Alopurinol", "Allopurinol"],
     "subitems": [
       {
-        "formulation": "Ranitidin",
+        "formulation": "Alopurinol",
+        "kronis": "Max 30 tablet"
+      }
+    ]
+  },
+
+  "Gliklazid": {
+    "label": "Gliklazid",
+    "aliases": ["Gliklazid"],
+    "subitems": [
+      {
+        "formulation": "Gliklazid 80 mg",
+        "aliases": ["Gliklazid", "80 mg"],
+        "kronis": "Max 60 tablet"
+      },
+      {
+        "formulation": "Gliklazid SR 30 mg",
+        "aliases": ["Gliklazid", "SR", "30 mg"],
+        "kronis": "Max 30 tablet",
+        "subbadge": { "text": "SR 30 mg", "class": "badge badge-primary badge-danger" }
+      },
+      {
+        "formulation": "Gliklazid SR 60 mg",
+        "aliases": ["Gliklazid", "SR", "60 mg"],
+        "kronis": "Max 30 tablet",
+        "subbadge": { "text": "SR 60 mg", "class": "badge badge-primary badge-danger" }
+      }
+    ]
+  },
+
+  "Gabapentin": {
+    "label": "Gabapentin",
+    "aliases": ["Gabapentin"],
+    "subitems": [
+      {
+        "formulation": "Gabapentin",
+        "kronis": "Jika tidak ada Dx DM: hanya diberikan 7 hari. Jika ada Dx DM: Max 90 kapsul"
+      }
+    ]
+  },
+
+  "Asam Folat": {
+    "label": "Asam Folat",
+    "aliases": ["Asam Folat", "Folat"],
+    "subitems": [
+      {
+        "formulation": "Asam Folat",
         "kronis": "Max 30 tablet",
         "mingguan": "Max 7 tablet"
+      }
+    ]
+  },
+
+  "Vitamin B12": {
+    "label": "Vitamin B12",
+    "aliases": ["Vitamin B12", "Sianokobalamin"],
+    "subitems": [
+      {
+        "formulation": "Vitamin B12",
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 7 tablet"
+      }
+    ]
+  },
+
+  "Insulin": {
+    "label": "Insulin",
+    "aliases": ["Insulin"],
+    "subitems": [
+      {
+        "formulation": "Insulin",
+        "kronis": "Jangan lupa hitung penggunaan dan print protocol"
+      }
+    ]
+  },
+
+  "Atorvastatin": {
+    "label": "Atorvastatin",
+    "aliases": ["Atorvastatin"],
+    "subitems": [
+      {
+        "formulation": "Atorvastatin 10 mg",
+        "aliases": ["Atorvastatin", "10 mg"],
+        "kronis": "Hanya diberikan jika ada riwayat pemberian Simvastatin 3x, Max 0 tablet",
+        "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-success" }
+      },
+      {
+        "formulation": "Atorvastatin 20 mg",
+        "aliases": ["Atorvastatin", "20 mg"],
+        "kronis": "Hanya diberikan jika ada riwayat pemberian Simvastatin 3x, Max 60 tablet",
+        "subbadge": { "text": "20 mg", "class": "badge badge-primary badge-danger" }
+      }
+    ]
+  },
+
+  "Mikofenolat": {
+    "label": "Mikofenolat",
+    "aliases": ["Mikofenolat", "Mycophenolate"],
+    "subitems": [
+      {
+        "formulation": "Mikofenolat",
+        "kronis": "Jangan lupa print protocol"
+      }
+    ]
+  },
+
+  "Levetirasetam": {
+    "label": "Levetirasetam",
+    "aliases": ["Levetirasetam", "Levetiracetam"],
+    "subitems": [
+      {
+        "formulation": "Levetirasetam",
+        "kronis": "Max 180 tablet"
       }
     ]
   }
