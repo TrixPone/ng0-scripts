@@ -63,6 +63,53 @@
     ]
   },
 
+  "Azatioprin": {
+    "label": "Azatioprin",
+    "aliases": ["Azatioprin"],
+    "subitems": [
+      {
+        "formulation": "Azatioprin",
+        "kronis": "Max 120 tablet"
+      }
+    ]
+  },
+
+  "Piridostigmin": {
+    "label": "Piridostigmin",
+    "aliases": ["Piridostigmin"],
+    "subitems": [
+      {
+        "formulation": "Piridostigmin",
+        "kronis": "Dx: Miastenia Gravis, Max 300 tablet",
+        "mingguan": "Dx: Miastenia Gravis"
+      }
+    ]
+  },
+
+  "Kandesartan": {
+    "label": "Kandesartan",
+    "aliases": ["Kandesartan"],
+    "subitems": [
+      {
+        "formulation": "Kandesartan",
+        "kronis": "Harus ada riwayat ACEi",
+        "mingguan": "Harus ada riwayat ACEi, Max 30 tablet"
+      }
+    ]
+  },
+
+  "Domperidone": {
+    "label": "Domperidone",
+    "aliases": ["Domperidone", "Domperidon"],
+    "subitems": [
+      {
+        "formulation": "Domperidone",
+        "kronis": "Max 10 tablet",
+        "mingguan": "Max 10 tablet"
+      }
+    ]
+  },
+
   "Metformin": {
     "label": "Metformin",
     "aliases": ["Metformin"],
@@ -112,41 +159,6 @@
     ]
   },
 
-  "Alopurinol": {
-    "label": "Alopurinol",
-    "aliases": ["Alopurinol", "Allopurinol"],
-    "subitems": [
-      {
-        "formulation": "Alopurinol",
-        "kronis": "Max 30 tablet"
-      }
-    ]
-  },
-
-  "Gliklazid": {
-    "label": "Gliklazid",
-    "aliases": ["Gliklazid"],
-    "subitems": [
-      {
-        "formulation": "Gliklazid 80 mg",
-        "aliases": ["Gliklazid", "80 mg"],
-        "kronis": "Max 60 tablet"
-      },
-      {
-        "formulation": "Gliklazid SR 30 mg",
-        "aliases": ["Gliklazid", "SR", "30 mg"],
-        "kronis": "Max 30 tablet",
-        "subbadge": { "text": "SR 30 mg", "class": "badge badge-primary badge-danger" }
-      },
-      {
-        "formulation": "Gliklazid SR 60 mg",
-        "aliases": ["Gliklazid", "SR", "60 mg"],
-        "kronis": "Max 30 tablet",
-        "subbadge": { "text": "SR 60 mg", "class": "badge badge-primary badge-danger" }
-      }
-    ]
-  },
-
   "Gabapentin": {
     "label": "Gabapentin",
     "aliases": ["Gabapentin"],
@@ -184,7 +196,7 @@
 
   "Vitamin B-Kompleks": {
     "label": "Vitamin B-Kompleks",
-    "aliases": ["Vitamin B-Kompleks", "Vitamin", "Kompleks"],
+    "aliases": ["Vitamin", "Kompleks", "Vitamin B-Kompleks"],
     "subitems": [
       {
         "formulation": "Vitamin B-Kompleks",
@@ -206,17 +218,6 @@
     ]
   },
 
-  "Insulin": {
-    "label": "Insulin",
-    "aliases": ["Insulin"],
-    "subitems": [
-      {
-        "formulation": "Insulin",
-        "kronis": "Jangan lupa hitung penggunaan dan print protocol"
-      }
-    ]
-  },
-
   "Atorvastatin": {
     "label": "Atorvastatin",
     "aliases": ["Atorvastatin"],
@@ -224,7 +225,7 @@
       {
         "formulation": "Atorvastatin 10 mg",
         "aliases": ["Atorvastatin", "10 mg"],
-        "kronis": "Hanya diberikan jika ada riwayat pemberian Simvastatin 3x, Max 0 tablet",
+        "kronis": "Hanya diberikan jika ada riwayat pemberian Simvastatin 3x, Max 30 tablet",
         "subbadge": { "text": "10 mg", "class": "badge badge-primary badge-success" }
       },
       {
@@ -232,6 +233,17 @@
         "aliases": ["Atorvastatin", "20 mg"],
         "kronis": "Hanya diberikan jika ada riwayat pemberian Simvastatin 3x, Max 60 tablet",
         "subbadge": { "text": "20 mg", "class": "badge badge-primary badge-danger" }
+      }
+    ]
+  },
+
+  "Insulin": {
+    "label": "Insulin",
+    "aliases": ["Insulin"],
+    "subitems": [
+      {
+        "formulation": "Insulin",
+        "kronis": "Jangan lupa hitung penggunaan dan print protocol"
       }
     ]
   },
