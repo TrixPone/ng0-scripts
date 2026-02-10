@@ -3,11 +3,11 @@
     "label": "Parasetamol",
     "aliases": ["Parasetamol"],
     "subitems": [
-{
-  "formulation": "Parasetamol",
-  "kronis": "~15 tablet",
-  "mingguan": "~7 tablet"
-}
+      {
+        "formulation": "Parasetamol",
+        "kronis": "~15 tablet",
+        "mingguan": "~7 tablet"
+      }
     ]
   },
 
@@ -30,15 +30,15 @@
       {
         "formulation": "Mesalazin / Pentasa",
         "aliases": ["Mesalazin", "Pentasa"],
-"kronis": "Kolitis ulcerativa / intoleransi sulfasalazine",
-"mingguan": "Kolitis ulcerativa / intoleransi sulfasalazine"
+        "kronis": "Kolitis ulcerativa / intoleransi sulfasalazine",
+        "mingguan": "Kolitis ulcerativa / intoleransi sulfasalazine",
         "rm_whitelist": ["00758104", "00789505", "00818359"]
       },
       {
         "formulation": "Mesalazin / Salofalk",
         "aliases": ["Mesalazin", "Salofalk"],
-"kronis": "Kolitis ulcerativa / intoleransi sulfasalazine",
-"mingguan": "Kolitis ulcerativa / intoleransi sulfasalazine"
+        "kronis": "Kolitis ulcerativa / intoleransi sulfasalazine",
+        "mingguan": "Kolitis ulcerativa / intoleransi sulfasalazine",
         "rm_whitelist": ["00900123", "00802236"]
       }
     ]
@@ -97,6 +97,7 @@
       }
     ]
   },
+
   "Domperidone": {
     "label": "Domperidone",
     "aliases": ["Domperidone", "Domperidon"],
@@ -108,26 +109,28 @@
       }
     ]
   },
-"Asetilsistein": {
-  "label": "Asetilsistein",
-  "aliases": ["Asetilsistein"],
-  "subitems": [
-    {
-      "formulation": "Asetilsistein",
-      "kronis": "10 kapsul per kasus",
-      "mingguan": "10 kapsul per kasus"
-    }
-  ]
-},
-    "Vitamin B-kompleks": {
-  "label": "Vitamin B-kompleks",
-  "aliases": ["Vitamin", "Vitamin B", "B-kompleks", "Kompleks"],
-  "subitems": [
-    {
-      "formulation": "Vitamin B-kompleks",
-      "kronis": "Max 30 tablet",
-      "mingguan": "Max 7 tablet"
-    }
-  ]
-}
+
+  "Asetilsistein": {
+    "label": "Asetilsistein",
+    "aliases": ["Asetilsistein"],
+    "subitems": [
+      {
+        "formulation": "Asetilsistein",
+        "kronis": "10 kapsul per kasus",
+        "mingguan": "10 kapsul per kasus"
+      }
+    ]
+  },
+
+  "Vitamin B-kompleks": {
+    "label": "Vitamin B-kompleks",
+    "aliases": ["Vitamin", "Vitamin B", "B-kompleks", "Kompleks"],
+    "subitems": [
+      {
+        "formulation": "Vitamin B-kompleks",
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 7 tablet"
+      }
+    ]
+  }
 }
