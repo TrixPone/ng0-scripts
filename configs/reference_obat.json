@@ -237,12 +237,12 @@
     ]
   },
 
-  "Insulin": {
-    "label": "Insulin",
-    "aliases": ["Insulin"],
+  "insulin": {
+    "label": "insulin",
+    "aliases": ["insulin"],
     "subitems": [
       {
-        "formulation": "Insulin",
+        "formulation": "insulin",
         "kronis": "Jangan lupa hitung penggunaan dan print protocol"
       }
     ]
