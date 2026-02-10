@@ -144,5 +144,36 @@
         "mingguan": "Dx: Chondritis"
       }
     ]
+  },
+
+  "Ibuprofen": {
+    "label": "Ibuprofen",
+    "aliases": ["Ibuprofen"],
+    "subitems": [
+      {
+        "formulation": "Ibuprofen 200 mg",
+        "aliases": ["Ibuprofen", "200 mg"],
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 10 tablet"
+      },
+      {
+        "formulation": "Ibuprofen 400 mg",
+        "aliases": ["Ibuprofen", "400 mg"],
+        "kronis": "Max 60 tablet",
+        "mingguan": "Max 10 tablet"
+      }
+    ]
+  },
+
+  "Ranitidin": {
+    "label": "Ranitidin",
+    "aliases": ["Ranitidin"],
+    "subitems": [
+      {
+        "formulation": "Ranitidin",
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 7 tablet"
+      }
+    ]
   }
 }
