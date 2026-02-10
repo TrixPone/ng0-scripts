@@ -112,7 +112,7 @@
 
   "Asetilsistein": {
     "label": "Asetilsistein",
-    "aliases": ["Asetilsistein"],
+    "aliases": ["Asetilsistein", "NAC"],
     "subitems": [
       {
         "formulation": "Asetilsistein",
@@ -130,6 +130,18 @@
         "formulation": "Vitamin B-kompleks",
         "kronis": "Max 30 tablet",
         "mingguan": "Max 7 tablet"
+      }
+    ]
+  },
+
+  "Sulfasalazin": {
+    "label": "Sulfasalazin",
+    "aliases": ["Sulfasalazin"],
+    "subitems": [
+      {
+        "formulation": "Sulfasalazin",
+        "kronis": "Dx: Chondritis",
+        "mingguan": "Dx: Chondritis"
       }
     ]
   }
