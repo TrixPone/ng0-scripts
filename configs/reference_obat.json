@@ -131,7 +131,6 @@
     ]
   },
 
-{
   "Alopurinol": {
     "label": "Alopurinol",
     "aliases": ["Alopurinol", "Allopurinol"],
@@ -156,19 +155,13 @@
         "formulation": "Gliklazid SR 30 mg",
         "aliases": ["Gliklazid", "SR", "30 mg"],
         "kronis": "Max 30 tablet",
-        "subbadge": {
-          "text": "SR 30 mg",
-          "class": "badge badge-primary badge-danger"
-        }
+        "subbadge": { "text": "SR 30 mg", "class": "badge badge-primary badge-danger" }
       },
       {
         "formulation": "Gliklazid SR 60 mg",
         "aliases": ["Gliklazid", "SR", "60 mg"],
         "kronis": "Max 30 tablet",
-        "subbadge": {
-          "text": "SR 60 mg",
-          "class": "badge badge-primary badge-danger"
-        }
+        "subbadge": { "text": "SR 60 mg", "class": "badge badge-primary badge-danger" }
       }
     ]
   },
@@ -251,7 +244,4 @@
       }
     ]
   }
-}
-
-  
 }
