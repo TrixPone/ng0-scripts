@@ -129,5 +129,129 @@
         "mingguan": "Dx: PV (Polisitemia Vera)"
       }
     ]
+  },
+
+{
+  "Alopurinol": {
+    "label": "Alopurinol",
+    "aliases": ["Alopurinol", "Allopurinol"],
+    "subitems": [
+      {
+        "formulation": "Alopurinol",
+        "kronis": "Max 30 tablet"
+      }
+    ]
+  },
+
+  "Gliklazid": {
+    "label": "Gliklazid",
+    "aliases": ["Gliklazid"],
+    "subitems": [
+      {
+        "formulation": "Gliklazid 80 mg",
+        "aliases": ["Gliklazid", "80 mg"],
+        "kronis": "Max 60 tablet"
+      },
+      {
+        "formulation": "Gliklazid SR 30 mg",
+        "aliases": ["Gliklazid", "SR", "30 mg"],
+        "kronis": "Max 30 tablet",
+        "subbadge": {
+          "text": "SR 30 mg",
+          "class": "badge badge-primary badge-danger"
+        }
+      },
+      {
+        "formulation": "Gliklazid SR 60 mg",
+        "aliases": ["Gliklazid", "SR", "60 mg"],
+        "kronis": "Max 30 tablet",
+        "subbadge": {
+          "text": "SR 60 mg",
+          "class": "badge badge-primary badge-danger"
+        }
+      }
+    ]
+  },
+
+  "Kandesartan": {
+    "label": "Kandesartan",
+    "aliases": ["Kandesartan"],
+    "subitems": [
+      {
+        "formulation": "Kandesartan",
+        "kronis": "Harus ada riwayat ACEi",
+        "mingguan": "Harus ada riwayat ACEi, Max 30 tablet"
+      }
+    ]
+  },
+
+  "Domperidone": {
+    "label": "Domperidone",
+    "aliases": ["Domperidone", "Domperidon"],
+    "subitems": [
+      {
+        "formulation": "Domperidone",
+        "kronis": "Max 10 tablet",
+        "mingguan": "Max 10 tablet"
+      }
+    ]
+  },
+
+  "Asetilsistein": {
+    "label": "Asetilsistein",
+    "aliases": ["Asetilsistein", "asetilsistein"],
+    "subitems": [
+      {
+        "formulation": "Asetilsistein",
+        "kronis": "10 kapsul per kasus",
+        "mingguan": "10 kapsul per kasus"
+      }
+    ]
+  },
+
+  "Sulfasalazin": {
+    "label": "Sulfasalazin",
+    "aliases": ["Sulfasalazin"],
+    "subitems": [
+      {
+        "formulation": "Sulfasalazin",
+        "kronis": "Dx: Chondritis",
+        "mingguan": "Dx: Chondritis"
+      }
+    ]
+  },
+
+  "Ibuprofen": {
+    "label": "Ibuprofen",
+    "aliases": ["Ibuprofen"],
+    "subitems": [
+      {
+        "formulation": "Ibuprofen 200 mg",
+        "aliases": ["Ibuprofen", "200 mg"],
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 10 tablet"
+      },
+      {
+        "formulation": "Ibuprofen 400 mg",
+        "aliases": ["Ibuprofen", "400 mg"],
+        "kronis": "Max 60 tablet",
+        "mingguan": "Max 10 tablet"
+      }
+    ]
+  },
+
+  "Ranitidin": {
+    "label": "Ranitidin",
+    "aliases": ["Ranitidin"],
+    "subitems": [
+      {
+        "formulation": "Ranitidin",
+        "kronis": "Max 30 tablet",
+        "mingguan": "Max 7 tablet"
+      }
+    ]
   }
+}
+
+  
 }
