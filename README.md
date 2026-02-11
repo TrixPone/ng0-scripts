@@ -1,4 +1,4 @@
-# ng0-scripts
+<img width="415" height="561" alt="image" src="https://github.com/user-attachments/assets/4e41526b-ff87-46eb-85cc-964edf5ae73b" /># ng0-scripts
 Below is a bunch of scripts i made for local ng0 usage
 _(It mostly focuses on Pharmacy side of things)_
 
@@ -129,3 +129,18 @@ Highlight Obat Tidak Ada (with its respective qty) bright red
 <img width="1265" height="130" alt="image" src="https://github.com/user-attachments/assets/8246115c-ef92-4d80-a6c2-52930b56caf8" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Obat%20tidak%20ada%20Highlighting.user.js)
+
+
+# 17. Reference Obat
+Add Medication Reference on the sidebar
+
+<img width="415" height="561" alt="image" src="https://github.com/user-attachments/assets/774974cd-9e41-4014-85a9-68b31f9d3c7f" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Referensi-Obat-Matcher.user.js)
+
+# 18. Cetak Nomor Antri Multiplier
+Add cetak medication multiplier for easier printing
+
+<img width="601" height="454" alt="image" src="https://github.com/user-attachments/assets/a77b0348-61d4-477f-8dbf-6873d90db59a" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Cetak%20Nomor%20Antrian%20Multiplier.user.js)
