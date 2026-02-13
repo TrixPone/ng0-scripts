@@ -8,8 +8,8 @@
 // @grant        GM_xmlhttpRequest
 // @connect      ng0.rsupkandou.com
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js
 // ==/UserScript==
 
 (function() {
