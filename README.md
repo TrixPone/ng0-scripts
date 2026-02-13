@@ -144,3 +144,10 @@ Add cetak medication multiplier for easier printing
 <img width="601" height="454" alt="image" src="https://github.com/user-attachments/assets/a77b0348-61d4-477f-8dbf-6873d90db59a" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Cetak%20Nomor%20Antrian%20Multiplier.user.js)
+
+# 19. Append Previous Medication on Resume
+Append previous medication without switching registration
+
+<img width="1294" height="279" alt="image" src="https://github.com/user-attachments/assets/2f0dfbe8-447f-45d0-a884-f7d9b7013018" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js)
