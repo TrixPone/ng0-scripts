@@ -1,4 +1,4 @@
-<img width="415" height="561" alt="image" src="https://github.com/user-attachments/assets/4e41526b-ff87-46eb-85cc-964edf5ae73b" /># ng0-scripts
+# ng0-scripts
 Below is a bunch of scripts i made for local ng0 usage
 _(It mostly focuses on Pharmacy side of things)_
 
