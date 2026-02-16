@@ -15,19 +15,23 @@
 (function() {
     'use strict';
 
-    let zeroHighlightActive = false;
+    const STORAGE_KEY = "zeroQtyHighlightState";
+    let zeroHighlightActive = localStorage.getItem(STORAGE_KEY) === "true";
 
     // =====================================================
-    // WAIT UNTIL FARMASI TAB IS ACTIVE
+    // WAIT UNTIL FARMASI TAB IS ACTIVE (CLASS-BASED)
     // =====================================================
     function waitForFarmasiReady(callback) {
 
         const observer = new MutationObserver(() => {
 
-            const farmasiPane = document.querySelector('#farmasi.active.show');
-            const farmasiTable = farmasiPane?.querySelector('table');
+            const farmasiPane = document.getElementById('farmasi');
 
-            if (farmasiPane && farmasiTable) {
+            if (
+                farmasiPane &&
+                farmasiPane.classList.contains('active') &&
+                farmasiPane.classList.contains('show')
+            ) {
                 observer.disconnect();
                 callback();
             }
@@ -35,9 +39,9 @@
         });
 
         observer.observe(document.body, {
-            childList: true,
             subtree: true,
-            attributes: true
+            attributes: true,
+            attributeFilter: ['class']
         });
     }
 
@@ -49,10 +53,14 @@
     function initEnhancer() {
         createZeroQtyToggle();
         loadPreviousFarmasi();
+
+        if (zeroHighlightActive) {
+            highlightZeroQty();
+        }
     }
 
     // =====================================================
-    // ZERO QTY TOGGLE (TOP RIGHT)
+    // ZERO QTY TOGGLE (LOCALSTORAGE)
     // =====================================================
     function createZeroQtyToggle() {
 
@@ -62,19 +70,14 @@
         tabContent.style.position = "relative";
 
         const toggleBtn = document.createElement('button');
-        toggleBtn.innerText = "Highlight 0 Qty: OFF";
         toggleBtn.style.position = "absolute";
         toggleBtn.style.top = "5px";
         toggleBtn.style.right = "10px";
         toggleBtn.style.zIndex = "9999";
         toggleBtn.style.fontSize = "12px";
         toggleBtn.style.padding = "4px 8px";
-        toggleBtn.className = "btn btn-sm btn-outline-danger";
 
-        toggleBtn.addEventListener('click', function() {
-
-            zeroHighlightActive = !zeroHighlightActive;
-
+        function updateButtonUI() {
             toggleBtn.innerText = zeroHighlightActive
                 ? "Highlight 0 Qty: ON"
                 : "Highlight 0 Qty: OFF";
@@ -82,7 +85,16 @@
             toggleBtn.className = zeroHighlightActive
                 ? "btn btn-sm btn-danger"
                 : "btn btn-sm btn-outline-danger";
+        }
 
+        updateButtonUI();
+
+        toggleBtn.addEventListener('click', function() {
+
+            zeroHighlightActive = !zeroHighlightActive;
+            localStorage.setItem(STORAGE_KEY, zeroHighlightActive);
+
+            updateButtonUI();
             highlightZeroQty();
         });
 
@@ -105,12 +117,7 @@
                 const qty = qtyCell.innerText.trim();
 
                 if (qty === "0") {
-
-                    if (zeroHighlightActive) {
-                        row.style.color = "#ff0000";   // RED TEXT ONLY
-                    } else {
-                        row.style.color = "";
-                    }
+                    row.style.color = zeroHighlightActive ? "#ff0000" : "";
                 }
 
             });
@@ -119,11 +126,11 @@
     }
 
     // =====================================================
-    // LOAD PREVIOUS FARMASI
+    // LOAD PREVIOUS FARMASI (FILTERED BY TANGGAL ORDER)
     // =====================================================
     function loadPreviousFarmasi() {
 
-        const farmasiContainer = document.querySelector('#farmasi');
+        const farmasiContainer = document.getElementById('farmasi');
         const normInput = document.querySelector('#norm');
 
         if (!farmasiContainer || !normInput) return;
@@ -131,6 +138,36 @@
         const norm = normInput.value;
         const base_url = window.location.origin + "/";
         const currentId = window.location.pathname.split('/').pop();
+
+        // =====================================================
+        // GET CURRENT TANGGAL ORDER (dd/mm/yyyy hh:mm:ss)
+        // =====================================================
+        let currentDate = null;
+
+        const farmasiText = farmasiContainer.innerText;
+        const match = farmasiText.match(
+            /Tanggal Order\s*:\s*(\d{2}\/\d{2}\/\d{4}\s+\d{2}:\d{2}:\d{2})/
+        );
+
+        if (match) {
+
+            const [datePart, timePart] = match[1].split(" ");
+            const [day, month, year] = datePart.split("/");
+            const [hour, minute, second] = timePart.split(":");
+
+            currentDate = new Date(
+                year,
+                month - 1,
+                day,
+                hour,
+                minute,
+                second
+            );
+        }
+
+        if (!currentDate) {
+            currentDate = new Date();
+        }
 
         // Sticky Loader
         const loadingBar = document.createElement('div');
@@ -148,7 +185,6 @@
         loadingBar.style.display = "none";
         document.body.appendChild(loadingBar);
 
-        // Wrapper Section
         const wrapperRow = document.createElement('div');
         wrapperRow.className = "row mt-4";
 
@@ -167,7 +203,6 @@
         wrapperRow.appendChild(wrapperCol);
         farmasiContainer.appendChild(wrapperRow);
 
-        // Fetch previous registrations
         GM_xmlhttpRequest({
             method: "POST",
             url: base_url + "penunjang/C_historyPenunjang/getDetailPendaftaran",
@@ -184,7 +219,14 @@
                     return;
                 }
 
-                const filtered = data.filter(d => d.id_trx_pendaftaran != currentId);
+                const filtered = data.filter(d => {
+
+                    if (d.id_trx_pendaftaran == currentId) return false;
+                    if (!d.tanggal_pendaftaran) return false;
+
+                    const visitDate = new Date(d.tanggal_pendaftaran);
+                    return visitDate < currentDate;
+                });
 
                 if (!filtered.length) return;
 
@@ -223,14 +265,14 @@
                             }
 
                             loaded++;
-                            loadingBar.innerText = `Loading ${loaded} / ${filtered.length} ...`;
+                            loadingBar.innerText =
+                                `Loading ${loaded} / ${filtered.length} ...`;
 
                             if (loaded === filtered.length) {
                                 loadingBar.innerText = "Completed ✓";
                                 setTimeout(() => loadingBar.remove(), 1200);
                             }
 
-                            // Reapply highlight if toggle active
                             if (zeroHighlightActive) {
                                 highlightZeroQty();
                             }
