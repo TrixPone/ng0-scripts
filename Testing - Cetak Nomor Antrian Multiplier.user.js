@@ -11,11 +11,51 @@
 (function () {
     'use strict';
 
-    const CLICK_DELAY = 2000; // safe delay to prevent out-of-order printing
     let multiplier = 1;
     let statusEl = null;
     let stopBtn = null;
     let stopRequested = false;
+    let activeRequests = 0;
+
+    /* ==============================
+       NETWORK MONITOR
+    ============================== */
+
+    const originalOpen = XMLHttpRequest.prototype.open;
+    const originalSend = XMLHttpRequest.prototype.send;
+
+    XMLHttpRequest.prototype.open = function () {
+        this._isTracked = true;
+        return originalOpen.apply(this, arguments);
+    };
+
+    XMLHttpRequest.prototype.send = function () {
+        if (this._isTracked) {
+            activeRequests++;
+
+            this.addEventListener('loadend', () => {
+                activeRequests--;
+            });
+        }
+        return originalSend.apply(this, arguments);
+    };
+
+    function waitForNetworkIdle() {
+        return new Promise(resolve => {
+            const check = () => {
+                if (activeRequests === 0) {
+                    resolve();
+                } else {
+                    setTimeout(check, 50);
+                }
+            };
+            check();
+        });
+    }
+
+    /* ==============================
+       UI
+    ============================== */
 
     function waitForButtons() {
         const buttons = document.querySelectorAll('.btn_cetak_antrian');
@@ -24,11 +64,11 @@
             return;
         }
 
-        injectMultiplierUI(buttons[0]);
+        injectUI(buttons[0]);
         attachHandlers(buttons);
     }
 
-    function injectMultiplierUI(referenceButton) {
+    function injectUI(referenceButton) {
         if (document.getElementById('cetak-multiplier')) return;
 
         const container = document.createElement('div');
@@ -96,9 +136,13 @@
         });
     }
 
+    /* ==============================
+       SMART PRINT SEQUENCER
+    ============================== */
+
     function attachHandlers(buttons) {
         buttons.forEach(btn => {
-            btn.addEventListener('click', function (e) {
+            btn.addEventListener('click', async function (e) {
 
                 if (e.__multiplied) return;
                 if (multiplier <= 1) return;
@@ -110,29 +154,30 @@
                 statusEl.textContent = `Printing ${printed} / ${multiplier}`;
 
                 for (let i = 1; i < multiplier; i++) {
-                    setTimeout(() => {
-                        if (stopRequested) return;
 
-                        printed++;
-                        statusEl.textContent = `Printing ${printed} / ${multiplier}`;
+                    if (stopRequested) break;
 
-                        const evt = new MouseEvent('click', {
-                            bubbles: true,
-                            cancelable: true,
-                            view: window
-                        });
-                        evt.__multiplied = true;
-                        btn.dispatchEvent(evt);
+                    await waitForNetworkIdle();
 
-                        if (printed === multiplier) {
-                            stopBtn.style.display = 'none';
-                            setTimeout(() => {
-                                statusEl.textContent = 'Done ✔';
-                            }, 500);
-                        }
-                    }, i * CLICK_DELAY);
+                    if (stopRequested) break;
+
+                    printed++;
+                    statusEl.textContent = `Printing ${printed} / ${multiplier}`;
+
+                    const evt = new MouseEvent('click', {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window
+                    });
+                    evt.__multiplied = true;
+                    btn.dispatchEvent(evt);
                 }
 
+                stopBtn.style.display = 'none';
+
+                if (!stopRequested) {
+                    statusEl.textContent = 'Done ✔';
+                }
             }, false);
         });
     }
