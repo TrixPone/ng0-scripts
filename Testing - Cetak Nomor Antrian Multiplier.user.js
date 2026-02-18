@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Cetak Nomor Antrian Multiplier
 // @namespace    http://rsupkandou.com
-// @version      2026-02-09
+// @version      2026-02-18
 // @description  Add print multiplier (1x, 5x, 10x) to CETAK buttons
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/monitoring/antrian/*
@@ -11,7 +11,7 @@
 (function () {
     'use strict';
 
-    const CLICK_DELAY = 2000; // ⏱️ BIG delay to prevent out-of-order printing
+    const CLICK_DELAY = 2000; // safe delay to prevent out-of-order printing
     let multiplier = 1;
     let statusEl = null;
     let stopBtn = null;
@@ -55,9 +55,6 @@
             </label>
             <label style="margin:0 8px;cursor:pointer;">
                 <input type="radio" name="cetak_multiplier" value="10"> 10×
-            </label>
-            <label style="margin:0 8px;cursor:pointer;">
-                <input type="radio" name="cetak_multiplier" value="50"> 50×
             </label>
 
             <div id="cetak-status" style="margin-top:8px;font-size:13px;color:#aaa;">
@@ -106,16 +103,6 @@
                 if (e.__multiplied) return;
                 if (multiplier <= 1) return;
 
-                if (multiplier >= 50) {
-                    const ok = confirm(
-                        `YAKIN BRO?\n\nIni bakal cetak ${multiplier} kali.\n\nLanjut?`
-                    );
-                    if (!ok) {
-                        statusEl.textContent = 'Cancelled';
-                        return;
-                    }
-                }
-
                 stopRequested = false;
                 stopBtn.style.display = 'inline-block';
 
@@ -150,5 +137,7 @@
         });
     }
 
+    waitForButtons();
+})();
     waitForButtons();
 })();
