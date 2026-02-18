@@ -139,5 +139,3 @@
 
     waitForButtons();
 })();
-    waitForButtons();
-})();
