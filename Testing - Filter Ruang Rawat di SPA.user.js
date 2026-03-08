@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Testing - Filter Ruang Rawat di SPA
 // @namespace    http://rsupkandou.com
-// @version      2026-01-13
+// @version      2026-03-08
 // @description  Filter Ruang Rawat, Status Resep, and text search (auto rebuild ver)
 // @author       TrixPone
 // @match        */spa-farmasi
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @grant        GM.getValue
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @updateURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA.user.js
 // @downloadURL	 https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Filter%20Ruang%20Rawat%20di%20SPA.user.js
