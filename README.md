@@ -157,4 +157,4 @@ Auto prefetch kartu stock items (it needs to trigger the first time)
 
 <img width="508" height="395" alt="image" src="https://github.com/user-attachments/assets/8c49c24f-18a5-44dc-a717-7f143303926a" />
 
-[Link]([https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Kartu%20Stock%20Prefetch.user.js))
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Kartu%20Stock%20Prefetch.user.js)
