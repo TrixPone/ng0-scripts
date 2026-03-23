@@ -151,3 +151,10 @@ Append previous medication without switching registration
 <img width="1294" height="279" alt="image" src="https://github.com/user-attachments/assets/2f0dfbe8-447f-45d0-a884-f7d9b7013018" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js)
+
+# 20. Prefetch Kartu Stock
+Auto prefetch kartu stock items (it needs to trigger the first time)
+
+<img width="508" height="395" alt="image" src="https://github.com/user-attachments/assets/8c49c24f-18a5-44dc-a717-7f143303926a" />
+
+[Link]([https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Kartu%20Stock%20Prefetch.user.js))
