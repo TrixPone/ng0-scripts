@@ -7,8 +7,8 @@
 // @match        */view_monitoring_stock
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Kartu%20Stock%20Prefetch.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Kartu%20Stock%20Prefetch.user.js
 // ==/UserScript==
 
 
