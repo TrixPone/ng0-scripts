@@ -158,3 +158,10 @@ Auto prefetch kartu stock items (it needs to trigger the first time)
 <img width="508" height="395" alt="image" src="https://github.com/user-attachments/assets/8c49c24f-18a5-44dc-a717-7f143303926a" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Kartu%20Stock%20Prefetch.user.js)
+
+# 21. Sortable Kartu Stock
+Make the Kartu Stock table sortable by clicking the header
+
+<img width="553" height="490" alt="image" src="https://github.com/user-attachments/assets/cd638482-266a-4d9e-84e2-bc2056b6dc6f" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Sortable%20Kartu%20Stock.user.js)
