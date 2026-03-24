@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Kartu Stock Prefetch
 // @namespace    http://rsupkandou.com
-// @version      2026-03-23
+// @version      2026-03-24
 // @description  Auto prefetch kartu stock items (it needs to trigger the first time)
 // @author       TrixPone
 // @match        */farmasi/gudang/C_stock_barang/view_monitoring_stock*
@@ -25,6 +25,53 @@
     let currentSearchToken = 0;
     let controllers = [];
 
+    let stockCache = {};
+
+    // ==============================
+    // 🧱 Tooltip
+    // ==============================
+    const tooltip = document.createElement('div');
+    tooltip.style.position = 'fixed';
+    tooltip.style.zIndex = 9999;
+    tooltip.style.background = '#171e27'; // ✅ updated
+    tooltip.style.color = '#fff';
+    tooltip.style.padding = '8px 10px';
+    tooltip.style.borderRadius = '6px';
+    tooltip.style.fontSize = '12px';
+    tooltip.style.maxWidth = '320px';
+    tooltip.style.display = 'none';
+    tooltip.style.pointerEvents = 'none';
+
+    document.body.appendChild(tooltip);
+
+    function showTooltip(el, data) {
+        if (!data) return;
+
+        // sort highest stock first
+        data.sort((a, b) => (b.stock || 0) - (a.stock || 0));
+
+        let content = data.map(d => {
+            let stock = parseInt(d.stock || 0);
+
+            if (stock === 0) {
+                return `<div style="color:#888;">${d.nm_unit_ruangan} : ${stock}</div>`;
+            } else {
+                return `<div style="color:#00ddbf;">${d.nm_unit_ruangan} : ${stock}</div>`; // ✅ updated
+            }
+        }).join('');
+
+        tooltip.innerHTML = content;
+        tooltip.style.display = 'block';
+
+        let rect = el.getBoundingClientRect();
+        tooltip.style.top = (rect.bottom + 5) + 'px';
+        tooltip.style.left = rect.left + 'px';
+    }
+
+    function hideTooltip() {
+        tooltip.style.display = 'none';
+    }
+
     // ==============================
     // 🔥 Intercept requests
     // ==============================
@@ -38,21 +85,19 @@
 
     XMLHttpRequest.prototype.send = function(body) {
 
-        // 🔄 NEW SEARCH
+        // 🔄 New search
         if (this._url && this._url.includes('get-barang-redis')) {
-            console.log('🔄 New search → reset');
 
             currentSearchToken++;
 
-            // ❌ abort all
             controllers.forEach(c => c.abort());
             controllers = [];
 
-            // ❌ reset queue
             queue = [];
             activeRequests = 0;
 
-            // 🧼 reset UI
+            stockCache = {};
+
             document.querySelectorAll('.selectize-dropdown-content [data-value]')
                 .forEach(el => {
                     delete el.dataset.loaded;
@@ -64,8 +109,6 @@
         if (this._url && this._url.includes('getStockOpnameTerakhirSemuaUnitKerja')) {
             if (!capturedPayload) {
                 capturedPayload = body;
-                console.log('✅ Payload captured');
-
                 setTimeout(processAll, 300);
             }
         }
@@ -115,6 +158,7 @@
         el.dataset.loaded = "true";
 
         let id_barang = el.getAttribute('data-value');
+
         el.innerText = el.innerText.trim() + ' (...)';
 
         enqueue(() => {
@@ -141,6 +185,8 @@
 
                 if (token !== currentSearchToken) return;
 
+                stockCache[id_barang] = data;
+
                 let total = 0;
                 data.forEach(i => total += parseInt(i.stock || 0));
 
@@ -160,7 +206,7 @@
     }
 
     // ==============================
-    // 🚀 Viewport priority sorting
+    // 🚀 Viewport priority
     // ==============================
     function processAll() {
         if (!capturedPayload) return;
@@ -169,16 +215,31 @@
 
         let items = Array.from(document.querySelectorAll('.selectize-dropdown-content [data-value]'));
 
-        // 🔥 sort by distance to viewport top
         items.sort((a, b) => {
             let rectA = a.getBoundingClientRect();
             let rectB = b.getBoundingClientRect();
-
             return Math.abs(rectA.top) - Math.abs(rectB.top);
         });
 
         items.forEach(el => processItem(el, token));
     }
+
+    // ==============================
+    // 👀 Tooltip trigger
+    // ==============================
+    document.addEventListener('mouseover', (e) => {
+        let el = e.target.closest('.selectize-dropdown-content [data-value]');
+        if (!el) return;
+
+        let id = el.getAttribute('data-value');
+        showTooltip(el, stockCache[id]);
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest('.selectize-dropdown-content [data-value]')) {
+            hideTooltip();
+        }
+    });
 
     // ==============================
     // 👀 Observe dropdown
