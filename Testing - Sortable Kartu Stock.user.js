@@ -7,8 +7,8 @@
 // @match        */farmasi/gudang/C_stock_barang/view_monitoring_stock*
 // @grant        none
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Sortable%20Kartu%20Stock.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Sortable%20Kartu%20Stock.user.js
 // ==/UserScript==
 
 // note: this script is made with AI assistance
