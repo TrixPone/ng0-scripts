@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Append Previous Medication on Resume
 // @namespace    http://rsupkandou.com
-// @version      2026-02-14
+// @version      2026-04-11
 // @description  Append previous medication without switching registration
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/*
@@ -12,277 +12,316 @@
 // @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Append%20Previous%20Medication%20on%20Resume.user.js
 // ==/UserScript==
 
+// This script is made with AI Assistance
+
 (function() {
-    'use strict';
+'use strict';
 
-    const STORAGE_KEY = "zeroQtyHighlightState";
-    let zeroHighlightActive = localStorage.getItem(STORAGE_KEY) === "true";
+const STORAGE_KEY = "zeroQtyHighlightState";
+let zeroHighlightActive = localStorage.getItem(STORAGE_KEY) === "true";
 
-    // =====================================================
-    // WAIT UNTIL FARMASI TAB IS ACTIVE (CLASS-BASED)
-    // =====================================================
-    function waitForFarmasiReady(callback) {
+let activeFilters = new Set();
+let filterContainer = null;
 
-        const observer = new MutationObserver(() => {
+// =====================================================
+function waitForFarmasiReady(callback) {
 
-            const farmasiPane = document.getElementById('farmasi');
+    const observer = new MutationObserver(() => {
+        const el = document.getElementById('farmasi');
 
-            if (
-                farmasiPane &&
-                farmasiPane.classList.contains('active') &&
-                farmasiPane.classList.contains('show')
-            ) {
-                observer.disconnect();
-                callback();
-            }
-
-        });
-
-        observer.observe(document.body, {
-            subtree: true,
-            attributes: true,
-            attributeFilter: ['class']
-        });
-    }
-
-    waitForFarmasiReady(initEnhancer);
-
-    // =====================================================
-    // MAIN INITIALIZER
-    // =====================================================
-    function initEnhancer() {
-        createZeroQtyToggle();
-        loadPreviousFarmasi();
-
-        if (zeroHighlightActive) {
-            highlightZeroQty();
+        if (el && el.classList.contains('active') && el.classList.contains('show')) {
+            observer.disconnect();
+            callback();
         }
-    }
+    });
 
-    // =====================================================
-    // ZERO QTY TOGGLE (LOCALSTORAGE)
-    // =====================================================
-    function createZeroQtyToggle() {
+    observer.observe(document.body, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class']
+    });
+}
 
-        const tabContent = document.querySelector('#myTabContent');
-        if (!tabContent) return;
+waitForFarmasiReady(initEnhancer);
 
-        tabContent.style.position = "relative";
+// =====================================================
+function initEnhancer() {
+    createZeroQtyToggle();
+    loadPreviousFarmasi();
 
-        const toggleBtn = document.createElement('button');
-        toggleBtn.style.position = "absolute";
-        toggleBtn.style.top = "5px";
-        toggleBtn.style.right = "10px";
-        toggleBtn.style.zIndex = "9999";
-        toggleBtn.style.fontSize = "12px";
-        toggleBtn.style.padding = "4px 8px";
+    setTimeout(() => {
+        createFilterUI();
+        updateFilterList();
+        if (zeroHighlightActive) highlightZeroQty();
+    }, 500);
+}
 
-        function updateButtonUI() {
-            toggleBtn.innerText = zeroHighlightActive
-                ? "Highlight 0 Qty: ON"
-                : "Highlight 0 Qty: OFF";
+// =====================================================
+// FILTER UI (COLLAPSIBLE + CLEAR)
+// =====================================================
+function createFilterUI() {
 
-            toggleBtn.className = zeroHighlightActive
-                ? "btn btn-sm btn-danger"
-                : "btn btn-sm btn-outline-danger";
+    const farmasi = document.getElementById('farmasi');
+    if (!farmasi) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.style.marginBottom = "10px";
+    wrapper.style.border = "1px solid #00ddbf";
+    wrapper.style.borderRadius = "6px";
+
+    const header = document.createElement('div');
+    header.style.cursor = "pointer";
+    header.style.padding = "8px";
+    header.style.color = "#00ddbf";
+    header.style.fontWeight = "bold";
+    header.innerText = "▶ Filter Obat";
+
+    const body = document.createElement('div');
+    body.style.display = "none";
+    body.style.padding = "8px";
+
+    const controls = document.createElement('div');
+    controls.style.marginBottom = "6px";
+
+    const clearBtn = document.createElement('button');
+    clearBtn.innerText = "Clear All";
+    clearBtn.className = "btn btn-sm btn-outline-secondary";
+    clearBtn.onclick = () => {
+        activeFilters.clear();
+        updateFilterList();
+        applyFilter();
+    };
+
+    controls.appendChild(clearBtn);
+
+    filterContainer = document.createElement('div');
+    filterContainer.style.maxHeight = "180px";
+    filterContainer.style.overflowY = "auto";
+
+    header.onclick = () => {
+        const open = body.style.display === "block";
+        body.style.display = open ? "none" : "block";
+        header.innerText = open ? "▶ Filter Obat" : "▼ Filter Obat";
+    };
+
+    body.appendChild(controls);
+    body.appendChild(filterContainer);
+
+    wrapper.appendChild(header);
+    wrapper.appendChild(body);
+
+    farmasi.prepend(wrapper);
+}
+
+// =====================================================
+// DYNAMIC FILTER LIST
+// =====================================================
+function updateFilterList() {
+
+    if (!filterContainer) return;
+
+    const counts = {};
+
+    document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
+        const name = row.children[2]?.innerText.trim();
+        if (!name) return;
+
+        counts[name] = (counts[name] || 0) + 1;
+    });
+
+    const sorted = Object.keys(counts).sort((a, b) => a.localeCompare(b));
+
+    filterContainer.innerHTML = "";
+
+    sorted.forEach(name => {
+
+        const label = document.createElement('label');
+        label.style.display = "block";
+        label.style.cursor = "pointer";
+
+        const checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.value = name;
+        checkbox.checked = activeFilters.has(name);
+        checkbox.style.marginRight = "6px";
+
+        checkbox.onchange = () => {
+            if (checkbox.checked) activeFilters.add(name);
+            else activeFilters.delete(name);
+            applyFilter();
+        };
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(`${name} (${counts[name]})`));
+
+        filterContainer.appendChild(label);
+    });
+}
+
+// =====================================================
+function applyFilter() {
+
+    document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
+
+        const name = row.children[2]?.innerText.trim();
+        if (!name) return;
+
+        if (activeFilters.size === 0) {
+            row.style.display = "";
+            return;
         }
 
-        updateButtonUI();
+        let match = false;
 
-        toggleBtn.addEventListener('click', function() {
-
-            zeroHighlightActive = !zeroHighlightActive;
-            localStorage.setItem(STORAGE_KEY, zeroHighlightActive);
-
-            updateButtonUI();
-            highlightZeroQty();
+        activeFilters.forEach(f => {
+            if (name.includes(f)) match = true;
         });
 
-        tabContent.appendChild(toggleBtn);
+        row.style.display = match ? "" : "none";
+    });
+}
+
+// =====================================================
+// ZERO QTY
+// =====================================================
+function createZeroQtyToggle() {
+
+    const tabContent = document.querySelector('#myTabContent');
+    if (!tabContent) return;
+
+    tabContent.style.position = "relative";
+
+    const btn = document.createElement('button');
+    btn.style.position = "absolute";
+    btn.style.top = "5px";
+    btn.style.right = "10px";
+
+    function update() {
+        btn.innerText = zeroHighlightActive ? "Highlight 0 Qty: ON" : "OFF";
+        btn.className = zeroHighlightActive
+            ? "btn btn-sm btn-danger"
+            : "btn btn-sm btn-outline-danger";
     }
 
-    function highlightZeroQty() {
+    update();
 
-        const tables = document.querySelectorAll('#farmasi table');
+    btn.onclick = () => {
+        zeroHighlightActive = !zeroHighlightActive;
+        localStorage.setItem(STORAGE_KEY, zeroHighlightActive);
+        update();
+        highlightZeroQty();
+    };
 
-        tables.forEach(table => {
+    tabContent.appendChild(btn);
+}
 
-            const rows = table.querySelectorAll('tbody tr');
+function highlightZeroQty() {
 
-            rows.forEach(row => {
+    document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
 
-                const qtyCell = row.querySelector('td:last-child');
-                if (!qtyCell) return;
+        const qty = row.querySelector('td:last-child')?.innerText.trim();
 
-                const qty = qtyCell.innerText.trim();
+        if (qty === "0") {
+            row.style.color = zeroHighlightActive ? "#ff0000" : "";
+        }
+    });
+}
 
-                if (qty === "0") {
-                    row.style.color = zeroHighlightActive ? "#ff0000" : "";
-                }
+// =====================================================
+// LOAD DATA
+// =====================================================
+function loadPreviousFarmasi() {
+
+    const farmasi = document.getElementById('farmasi');
+    const norm = document.querySelector('#norm')?.value;
+    if (!farmasi || !norm) return;
+
+    const base = window.location.origin + "/";
+    const currentId = window.location.pathname.split('/').pop();
+
+    let currentDate = new Date();
+
+    const match = farmasi.innerText.match(
+        /Tanggal Order\s*:\s*(\d{2}\/\d{2}\/\d{4}\s+\d{2}:\d{2}:\d{2})/
+    );
+
+    if (match) {
+        const [d,t] = match[1].split(" ");
+        const [day,mon,year] = d.split("/");
+        const [h,m,s] = t.split(":");
+        currentDate = new Date(year, mon-1, day, h, m, s);
+    }
+
+    const loading = document.createElement('div');
+    loading.style.position = "fixed";
+    loading.style.bottom = "0";
+    loading.style.width = "100%";
+    loading.style.background = "#111";
+    loading.style.color = "#00ddbf";
+    loading.style.textAlign = "center";
+    loading.style.display = "none";
+    document.body.appendChild(loading);
+
+    const container = document.createElement('div');
+    container.className = "row mt-4";
+
+    const col = document.createElement('div');
+    col.className = "col-12";
+
+    const title = document.createElement('div');
+    title.innerText = "Riwayat Farmasi Sebelumnya";
+    title.style.color = "#00ddbf";
+    title.style.borderBottom = "2px solid #00ddbf";
+
+    col.appendChild(title);
+    container.appendChild(col);
+    farmasi.appendChild(container);
+
+    GM_xmlhttpRequest({
+        method: "POST",
+        url: base + "penunjang/C_historyPenunjang/getDetailPendaftaran",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        data: "norm=" + norm,
+        onload: res => {
+
+            const data = JSON.parse(res.responseText);
+
+            const filtered = data.filter(d => {
+                if (d.id_trx_pendaftaran == currentId) return false;
+                return new Date(d.tanggal_pendaftaran) < currentDate;
+            });
+
+            let loaded = 0;
+            loading.style.display = "block";
+
+            filtered.forEach(item => {
+
+                GM_xmlhttpRequest({
+                    method: "GET",
+                    url: base + "penunjang/C_historyPenunjang/getPencarianResumePasienDetail/" + item.id_trx_pendaftaran,
+                    onload: r => {
+
+                        const doc = new DOMParser().parseFromString(r.responseText, "text/html");
+                        const table = doc.querySelector('#farmasi table');
+
+                        if (table) {
+                            col.appendChild(table.cloneNode(true));
+                        }
+
+                        loaded++;
+                        loading.innerText = `Loading ${loaded}/${filtered.length}`;
+
+                        updateFilterList();   // 🔥 dynamic update
+                        applyFilter();
+
+                        if (zeroHighlightActive) highlightZeroQty();
+                    }
+                });
 
             });
 
-        });
-    }
-
-    // =====================================================
-    // LOAD PREVIOUS FARMASI (FILTERED BY TANGGAL ORDER)
-    // =====================================================
-    function loadPreviousFarmasi() {
-
-        const farmasiContainer = document.getElementById('farmasi');
-        const normInput = document.querySelector('#norm');
-
-        if (!farmasiContainer || !normInput) return;
-
-        const norm = normInput.value;
-        const base_url = window.location.origin + "/";
-        const currentId = window.location.pathname.split('/').pop();
-
-        // =====================================================
-        // GET CURRENT TANGGAL ORDER (dd/mm/yyyy hh:mm:ss)
-        // =====================================================
-        let currentDate = null;
-
-        const farmasiText = farmasiContainer.innerText;
-        const match = farmasiText.match(
-            /Tanggal Order\s*:\s*(\d{2}\/\d{2}\/\d{4}\s+\d{2}:\d{2}:\d{2})/
-        );
-
-        if (match) {
-
-            const [datePart, timePart] = match[1].split(" ");
-            const [day, month, year] = datePart.split("/");
-            const [hour, minute, second] = timePart.split(":");
-
-            currentDate = new Date(
-                year,
-                month - 1,
-                day,
-                hour,
-                minute,
-                second
-            );
         }
-
-        if (!currentDate) {
-            currentDate = new Date();
-        }
-
-        // Sticky Loader
-        const loadingBar = document.createElement('div');
-        loadingBar.style.position = "fixed";
-        loadingBar.style.bottom = "0";
-        loadingBar.style.left = "0";
-        loadingBar.style.width = "100%";
-        loadingBar.style.padding = "8px 15px";
-        loadingBar.style.background = "#111";
-        loadingBar.style.color = "#00ddbf";
-        loadingBar.style.fontSize = "14px";
-        loadingBar.style.zIndex = "9999";
-        loadingBar.style.borderTop = "2px solid #00ddbf";
-        loadingBar.style.textAlign = "center";
-        loadingBar.style.display = "none";
-        document.body.appendChild(loadingBar);
-
-        const wrapperRow = document.createElement('div');
-        wrapperRow.className = "row mt-4";
-
-        const wrapperCol = document.createElement('div');
-        wrapperCol.className = "col-12";
-
-        const titleDiv = document.createElement('div');
-        titleDiv.style.color = "#00ddbf";
-        titleDiv.style.borderBottom = "2px solid #00ddbf";
-        titleDiv.style.paddingBottom = "6px";
-        titleDiv.style.marginBottom = "10px";
-        titleDiv.style.fontWeight = "bold";
-        titleDiv.innerText = "Riwayat Farmasi Sebelumnya";
-
-        wrapperCol.appendChild(titleDiv);
-        wrapperRow.appendChild(wrapperCol);
-        farmasiContainer.appendChild(wrapperRow);
-
-        GM_xmlhttpRequest({
-            method: "POST",
-            url: base_url + "penunjang/C_historyPenunjang/getDetailPendaftaran",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            data: "norm=" + encodeURIComponent(norm),
-            onload: function(response) {
-
-                let data;
-                try {
-                    data = JSON.parse(response.responseText);
-                } catch (e) {
-                    return;
-                }
-
-                const filtered = data.filter(d => {
-
-                    if (d.id_trx_pendaftaran == currentId) return false;
-                    if (!d.tanggal_pendaftaran) return false;
-
-                    const visitDate = new Date(d.tanggal_pendaftaran);
-                    return visitDate < currentDate;
-                });
-
-                if (!filtered.length) return;
-
-                loadingBar.style.display = "block";
-                loadingBar.innerText = "Loading 0 / " + filtered.length + " ...";
-
-                let loaded = 0;
-
-                filtered.forEach(item => {
-
-                    const detailUrl = base_url +
-                        "penunjang/C_historyPenunjang/getPencarianResumePasienDetail/" +
-                        item.id_trx_pendaftaran;
-
-                    GM_xmlhttpRequest({
-                        method: "GET",
-                        url: detailUrl,
-                        onload: function(res) {
-
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(res.responseText, "text/html");
-
-                            const farmasiTable = doc.querySelector('#farmasi table');
-
-                            if (farmasiTable) {
-
-                                const visitInfo = document.createElement('div');
-                                visitInfo.className = "mt-3 mb-1";
-                                visitInfo.innerHTML = `
-                                    <strong>${item.tanggal_pendaftaran}</strong>
-                                    | ${item.nm_unit_ruangan}
-                                `;
-
-                                wrapperCol.appendChild(visitInfo);
-                                wrapperCol.appendChild(farmasiTable.cloneNode(true));
-                            }
-
-                            loaded++;
-                            loadingBar.innerText =
-                                `Loading ${loaded} / ${filtered.length} ...`;
-
-                            if (loaded === filtered.length) {
-                                loadingBar.innerText = "Completed ✓";
-                                setTimeout(() => loadingBar.remove(), 1200);
-                            }
-
-                            if (zeroHighlightActive) {
-                                highlightZeroQty();
-                            }
-                        }
-                    });
-
-                });
-
-            }
-        });
-    }
+    });
+}
 
 })();
