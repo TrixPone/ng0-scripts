@@ -165,3 +165,11 @@ Make the Kartu Stock table sortable by clicking the header
 <img width="553" height="490" alt="image" src="https://github.com/user-attachments/assets/cd638482-266a-4d9e-84e2-bc2056b6dc6f" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Sortable%20Kartu%20Stock.user.js)
+
+
+# 22. Auto Retur button
+Adds a button to automatically confirm retur and skip the modal thing
+
+<img width="807" height="175" alt="image" src="https://github.com/user-attachments/assets/a436d4b3-1a97-4283-890c-a6ab473eea06" />
+
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Auto%20Confirm%20Return%20Button.user.js)
