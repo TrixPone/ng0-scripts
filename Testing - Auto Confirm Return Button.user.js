@@ -7,8 +7,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @match        *://ng0.rsupkandou.com:3000/farmasi/retur/C_Return_obat_depo/*
 // @grant        GM_xmlhttpRequest
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Auto%20Confirm%20Return%20Button.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Auto%20Confirm%20Return%20Button.user.js
 // ==/UserScript==
 
 //THIS SCRIPT IS MADE WITH AI ASSISTANCE
