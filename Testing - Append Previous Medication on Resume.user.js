@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Append Previous Medication on Resume
 // @namespace    http://rsupkandou.com
-// @version      2026-05-20
+// @version      2026-05-21
 // @description  Append previous medication without switching registration
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/*
