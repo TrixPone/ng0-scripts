@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Append Previous Medication on Resume
 // @namespace    http://rsupkandou.com
-// @version      2026-05-21
+// @version      2026-06-08
 // @description  Append previous medication without switching registration
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/*
@@ -168,18 +168,23 @@ function updateFilterList() {
 
     if (!filterContainer) return;
 
-    const counts = {};
+ const counts = {};
 
-    document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
+document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
 
-        const name =
-            row.children[2]?.innerText.trim();
+    const name =
+        row.children[2]?.innerText.trim();
 
-        if (!name) return;
+    if (!name) return;
 
-        counts[name] = (counts[name] || 0) + 1;
-    });
+    const qty =
+        parseFloat(
+            row.children[3]?.innerText.trim()
+        ) || 0;
 
+    counts[name] =
+        (counts[name] || 0) + qty;
+});
     const sorted =
         Object.keys(counts)
         .sort((a, b) => a.localeCompare(b));
@@ -190,8 +195,13 @@ function updateFilterList() {
 
         const label = document.createElement('label');
 
-        label.style.display = "block";
-        label.style.cursor = "pointer";
+label.style.display = "block";
+label.style.cursor = "pointer";
+
+if (counts[name] === 0) {
+
+    label.style.opacity = "0.45";
+}
 
         const checkbox = document.createElement('input');
 
@@ -214,11 +224,11 @@ function updateFilterList() {
 
         label.appendChild(checkbox);
 
-        label.appendChild(
-            document.createTextNode(
-                `${name} (${counts[name]})`
-            )
-        );
+label.appendChild(
+    document.createTextNode(
+        `${name} (${counts[name].toLocaleString()})`
+    )
+);
 
         filterContainer.appendChild(label);
     });
@@ -229,14 +239,18 @@ function updateFilterList() {
 // =====================================================
 function applyFilter() {
 
-    document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
+    // =====================================
+    // FILTER ROWS
+    // =====================================
+    document
+    .querySelectorAll('#farmasi table tbody tr')
+    .forEach(row => {
 
         const name =
             row.children[2]?.innerText.trim();
 
         if (!name) return;
 
-        // No filters
         if (activeFilters.size === 0) {
 
             row.style.display = "";
@@ -254,7 +268,31 @@ function applyFilter() {
 
         });
 
-        row.style.display = match ? "" : "none";
+        row.style.display =
+            match ? "" : "none";
+    });
+
+    // =====================================
+    // HIDE EMPTY HISTORY BLOCKS
+    // =====================================
+    document
+    .querySelectorAll('.farmasi-history-entry')
+    .forEach(block => {
+
+        const rows =
+            block.querySelectorAll('tbody tr');
+
+        if (!rows.length) return;
+
+        const visibleRows =
+            [...rows].filter(row =>
+                row.style.display !== "none"
+            );
+
+        block.style.display =
+            visibleRows.length
+                ? ""
+                : "none";
     });
 }
 
@@ -580,14 +618,40 @@ function loadPreviousFarmasi() {
 
                         if (farmasiBlock) {
 
-                            const cloned =
-                                farmasiBlock.cloneNode(true);
+    const cloned =
+    farmasiBlock.cloneNode(true);
 
-                            cloned.style.marginTop =
-                                "15px";
+cloned.classList.add(
+    'farmasi-history-entry'
+);
 
-                            historyContent.appendChild(cloned);
-                        }
+    cloned.style.marginTop = "15px";
+
+    // =================================
+    // RUANG RAWAT HEADER
+    // =================================
+    const ruanganDiv =
+        document.createElement('div');
+
+    ruanganDiv.className = "row";
+
+    ruanganDiv.innerHTML = `
+        <div class="col-2">
+            Ruang Rawat
+        </div>
+        <div class="col-1">:</div>
+        <div class="col-9">
+            <strong>${item.nm_unit_ruangan || '-'}</strong>
+        </div>
+    `;
+
+    cloned.insertBefore(
+        ruanganDiv,
+        cloned.firstChild
+    );
+
+    historyContent.appendChild(cloned);
+}
 
                         loaded++;
 
