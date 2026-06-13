@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Append Previous Medication on Resume
 // @namespace    http://rsupkandou.com
-// @version      2026-06-08
+// @version      2026-06-13
 // @description  Append previous medication without switching registration
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/*
@@ -22,13 +22,19 @@
 // =====================================================
 const STORAGE_KEY = "zeroQtyHighlightState";
 const HISTORY_COLLAPSE_KEY = "farmasiHistoryCollapsed";
+const RECENTS_RANGE_KEY = "farmasiRecentsRange";
+    const RECENTS_COLLAPSE_KEY =
+    "farmasiRecentsCollapsed";
 
 let zeroHighlightActive =
+
     localStorage.getItem(STORAGE_KEY) === "true";
 
 let activeFilters = new Set();
 
 let filterContainer = null;
+
+let recentsRows = [];
 
 // =====================================================
 // WAIT UNTIL FARMASI TAB ACTIVE
@@ -65,6 +71,7 @@ waitForFarmasiReady(initEnhancer);
 function initEnhancer() {
 
     createZeroQtyToggle();
+    createRecentsUI();
 
     loadPreviousFarmasi();
 
@@ -80,6 +87,185 @@ function initEnhancer() {
 
     }, 500);
 }
+
+
+    let recentsPane;
+let recentsTableBody;
+
+function createRecentsUI() {
+
+    const farmasi =
+        document.getElementById('farmasi');
+
+    if (!farmasi) return;
+
+    const wrapper =
+        document.createElement('div');
+
+    wrapper.style.marginBottom =
+        "10px";
+
+    wrapper.style.border =
+        "1px solid #00ddbf";
+
+    wrapper.style.padding =
+        "10px";
+
+    wrapper.style.borderRadius =
+        "6px";
+
+
+
+
+let recentsCollapsed =
+    localStorage.getItem(
+        RECENTS_COLLAPSE_KEY
+    ) === "true";
+
+const title =
+    document.createElement('div');
+
+title.style.color =
+    "#00ddbf";
+
+title.style.marginBottom =
+    "8px";
+
+title.style.cursor =
+    "pointer";
+
+title.style.userSelect =
+    "none";
+
+title.style.fontWeight =
+    "bold";
+
+function updateRecentsTitle() {
+
+    title.innerText =
+        (recentsCollapsed
+            ? "▶ "
+            : "▼ ")
+        + "Recents";
+}
+
+updateRecentsTitle();
+wrapper.appendChild(title);
+    const selector =
+        document.createElement('div');
+
+    selector.innerHTML = `
+<label>
+<input type="radio"
+name="recentRange"
+value="24">
+24 Jam
+</label>
+
+<label style="margin-left:15px">
+<input type="radio"
+name="recentRange"
+value="36">
+36 Jam
+</label>
+
+<label style="margin-left:15px">
+<input type="radio"
+name="recentRange"
+value="168">
+1 Minggu
+</label>
+`;
+
+   const content =
+    document.createElement('div');
+
+title.onclick = () => {
+
+    recentsCollapsed =
+        !recentsCollapsed;
+
+    localStorage.setItem(
+        RECENTS_COLLAPSE_KEY,
+        recentsCollapsed
+    );
+
+    content.style.display =
+        recentsCollapsed
+            ? "none"
+            : "block";
+
+    updateRecentsTitle();
+};
+
+
+content.style.display =
+    recentsCollapsed
+        ? "none"
+        : "block";
+
+content.appendChild(selector);
+
+wrapper.appendChild(content);
+
+    const table =
+        document.createElement('table');
+
+    table.className =
+        "table table-sm table-striped table-hover";
+
+    table.innerHTML = `
+<thead class="thead-dark">
+<tr>
+<th>Tanggal Resep</th>
+<th>Usia</th>
+<th>Nama Obat</th>
+<th>Qty</th>
+<th>Ruang Rawat</th>
+</tr>
+</thead>
+<tbody></tbody>
+`;
+
+    recentsTableBody =
+        table.querySelector('tbody');
+
+    content.appendChild(table);
+
+    farmasi.prepend(wrapper);
+
+    let currentRange =
+        localStorage.getItem(
+            RECENTS_RANGE_KEY
+        ) || "24";
+
+    const radio =
+        selector.querySelector(
+            `input[value="${currentRange}"]`
+        );
+
+    if (radio)
+        radio.checked = true;
+
+    selector
+    .querySelectorAll('input')
+    .forEach(r => {
+
+        r.onchange = () => {
+
+            currentRange =
+                r.value;
+
+            localStorage.setItem(
+                RECENTS_RANGE_KEY,
+                currentRange
+            );
+
+            rebuildRecents();
+        };
+    });
+}
+
 
 // =====================================================
 // FILTER UI
@@ -353,22 +539,262 @@ function createZeroQtyToggle() {
 // =====================================================
 function highlightZeroQty() {
 
-    document.querySelectorAll('#farmasi table tbody tr').forEach(row => {
+    document
+    .querySelectorAll('table tbody tr')
+    .forEach(row => {
 
-        const qty =
-            row.querySelector('td:last-child')
-            ?.innerText
-            .trim();
+        const cells =
+            row.querySelectorAll('td');
 
-        if (qty === "0") {
+        if (!cells.length)
+            return;
 
-            row.style.color =
-                zeroHighlightActive
-                ? "#ff0000"
-                : "";
+        let qty = null;
+
+        // Recents table
+        if (cells.length === 5) {
+
+            qty =
+                cells[3]
+                ?.innerText
+                .trim();
         }
+
+        // Farmasi table
+        else if (cells.length >= 4) {
+
+            const possibleQty =
+                cells[3]
+                ?.innerText
+                .trim();
+
+            if (!isNaN(possibleQty)) {
+                qty = possibleQty;
+            }
+        }
+
+        row.style.color =
+            (
+                zeroHighlightActive &&
+                qty === "0"
+            )
+            ? "#ff0000"
+            : "";
     });
 }
+
+//HELPER
+
+
+ function addRowsToRecents(table, ruangan) {
+
+    table
+    .querySelectorAll('tbody tr')
+    .forEach(row => {
+
+        const tanggal =
+            row.children[1]?.innerText.trim();
+
+        const nama =
+            row.children[2]?.innerText.trim();
+
+        const qty =
+            row.children[3]?.innerText.trim();
+
+        if (!tanggal) return;
+
+
+
+if (!tanggal) return;
+
+const ts = new Date(
+    tanggal.replace(" ", "T")
+).getTime();
+
+        if (isNaN(ts)) {
+
+    console.warn(
+        "[RECENTS INVALID DATE]",
+        tanggal
+    );
+
+    return;
+}
+
+        const exists =
+    recentsRows.some(r =>
+
+        r.tanggal === tanggal &&
+        r.nama === nama &&
+        r.qty === qty &&
+        r.ruangan === ruangan
+    );
+
+if (exists)
+    return;
+
+console.log(
+    "[RECENTS]",
+    {
+        tanggal,
+        nama,
+        qty,
+        ts
+    }
+);
+        recentsRows.push({
+
+            tanggal,
+            nama,
+            qty,
+            ruangan,
+            timestamp: ts
+
+        });
+
+        console.log(
+    "[RECENTS TOTAL]",
+    recentsRows.length
+);
+    });
+
+
+}
+
+
+function getRelativeTime(timestamp) {
+
+    const diffMs =
+        Date.now() - timestamp;
+
+    const minutes =
+        Math.floor(diffMs / 60000);
+
+    if (minutes < 1)
+        return "Baru saja";
+
+    if (minutes < 60)
+        return `${minutes} menit lalu`;
+
+    const hours =
+        Math.floor(minutes / 60);
+
+    const remMinutes =
+        minutes % 60;
+
+    if (hours < 24) {
+
+        if (remMinutes === 0)
+            return `${hours} jam lalu`;
+
+        return `${hours} jam ${remMinutes} menit lalu`;
+    }
+
+    const days =
+        Math.floor(hours / 24);
+
+    const remHours =
+        hours % 24;
+
+    if (days < 7) {
+
+        if (remHours === 0)
+            return `${days} hari lalu`;
+
+        return `${days} hari ${remHours} jam lalu`;
+    }
+
+    const weeks =
+        Math.floor(days / 7);
+
+    return `${weeks} minggu lalu`;
+}
+
+
+    function rebuildRecents() {
+
+    if (!recentsTableBody)
+        return;
+
+        recentsTableBody.innerHTML = "";
+
+    const hours =
+        Number(
+            localStorage.getItem(
+                RECENTS_RANGE_KEY
+            ) || 24
+        );
+
+    const cutoff =
+        Date.now() -
+        (hours * 60 * 60 * 1000);
+
+    console.log(
+        "[RECENTS REBUILD]",
+        {
+            totalRows: recentsRows.length,
+            cutoff: new Date(cutoff)
+        }
+    );
+    recentsRows
+    .filter(r => {
+
+    const keep =
+        r.timestamp >= cutoff;
+
+    console.log(
+        "[RECENTS FILTER]",
+        r.nama,
+        r.timestamp,
+        keep
+    );
+
+    return keep;
+})
+
+    .sort((a,b)=>{
+
+    const drugCompare =
+        a.nama.localeCompare(
+            b.nama
+        );
+
+    if (drugCompare !== 0)
+        return drugCompare;
+
+    return b.timestamp -
+           a.timestamp;
+})
+    .forEach(r => {
+
+        recentsTableBody
+        .insertAdjacentHTML(
+            "beforeend",
+            `
+<tr>
+<td>${r.tanggal}</td>
+<td>
+    <span style="
+        color:#00ddbf;
+        font-weight:bold;
+        white-space:nowrap;
+    ">
+        ${getRelativeTime(r.timestamp)}
+    </span>
+</td>
+<td>${r.nama}</td>
+<td>${r.qty}</td>
+<td>${r.ruangan}</td>
+</tr>
+`
+        );
+    });
+
+    if (zeroHighlightActive) {
+        highlightZeroQty();
+    }
+}
+
 
 // =====================================================
 // LOAD PREVIOUS FARMASI
@@ -377,6 +803,35 @@ function loadPreviousFarmasi() {
 
     const farmasi =
         document.getElementById('farmasi');
+
+
+setTimeout(() => {
+
+    const currentTable =
+        farmasi.querySelector(
+            '.table-responsive table'
+        );
+    console.log(
+    "[CURRENT TABLE]",
+    currentTable
+);
+
+    if (currentTable) {
+
+            console.log(
+        currentTable.outerHTML
+    );
+
+
+        addRowsToRecents(
+            currentTable,
+            "Current Visit"
+        );
+
+        rebuildRecents();
+    }
+
+}, 1000);
 
     const norm =
         document.querySelector('#norm')?.value;
@@ -650,6 +1105,17 @@ cloned.classList.add(
         cloned.firstChild
     );
 
+                            const clonedTable =
+    cloned.querySelector('table');
+
+if (clonedTable) {
+
+    addRowsToRecents(
+        clonedTable,
+        item.nm_unit_ruangan
+    );
+}
+
     historyContent.appendChild(cloned);
 }
 
@@ -664,6 +1130,10 @@ cloned.classList.add(
                         updateFilterList();
 
                         applyFilter();
+
+
+                        rebuildRecents()
+
 
                         if (zeroHighlightActive) {
                             highlightZeroQty();
