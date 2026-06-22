@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Testing - Tombol EMR di Nomor Pendaftaran
 // @namespace    http://rsupkandou.com
-// @version      2025-11-01
+// @version      2026-06-22
 // @description  Testing Add Tombol EMR + Resume di SPA
 // @author       TrixPone
 // @match        */spa-farmasi
@@ -27,7 +27,12 @@ function addBTN () {
     //define variables
 var EMR = document.getElementById('wrapperResep').dataset.idtrxpendaftaran
 var URLEMR = 'https://emr.rsupkandou.com/emr/C_emr/loadDetailErm/' + EMR
-var URLResume = 'https://ng0.rsupkandou.com:3000/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/' + EMR
+const currentBaseURL = window.location.origin;
+
+var URLResume =
+    currentBaseURL +
+    '/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/' +
+    EMR;
 
 var GrayBox = document.getElementsByClassName('col-12 mt-1')[0];
 
