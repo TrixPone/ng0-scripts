@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Testing - Antrian Farmasi Printing
 // @namespace    http://rsupkandou.com
-// @version      2026-01-22
+// @version      2026-06-22
 // @description  Script for filtering, sort and printing from Antrian Farmasi page
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/monitoring/antrian/*
+// @match        https://farmasi.rsupkandou.com/monitoring/antrian/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @grant        none
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Antrian%20Farmasi%20Printing.user.js
@@ -17,7 +18,7 @@
 (function () {
     'use strict';
 
-    let toggleActive = false;
+//    let toggleActive = false;
     let fontSize = Number(localStorage.getItem('antrianFontSize')) || 14;
     let activeFilters = new Set(
         JSON.parse(localStorage.getItem('antrianFilters') || '[]')
@@ -71,8 +72,11 @@
 
     const observer = new MutationObserver(() => {
         const table = document.querySelector('#tabel_antrian_farmasi table');
-        const col12 = document.querySelector('.col-12');
-        if (table && col12 && !document.getElementById('togglePrintBtn')) {
+       const col12 = document.querySelector('span.col-12');
+const headerSpan = document.querySelector(
+    'span.col-12:has(#btn_refresh_antrian_farmasi)'
+);
+        if (table && col12 && !document.getElementById('antrian-print-toolbar')) {
             injectUI(col12);
             enhanceTable();
         }
@@ -81,10 +85,10 @@
 
     function injectUI(container) {
         const wrap = document.createElement('div');
+        wrap.id = 'antrian-print-toolbar';
         wrap.style.marginBottom = '8px';
 
-        const toggleBtn = btn('Toggle Print State', 'btn btn-warning btn-sm', togglePrint);
-        toggleBtn.id = 'togglePrintBtn';
+      
 
         const printBtn = btn(
             '<i class="fa fa-print"></i> Print Selected Rows',
@@ -92,11 +96,10 @@
             printSelected,
             true
         );
-        printBtn.style.display = 'none';
 
         const tools = document.createElement('div');
         tools.style.marginTop = '6px';
-        tools.style.display = 'none';
+        tools.style.display = '';
 
         const regulerBtn = filterBtn('Reguler', 'A', 'green-button');
         const khususBtn = filterBtn('Khusus', 'B', 'yellow-button');
@@ -110,13 +113,17 @@
         const fontReset = btn('Reset Font','btn btn-secondary btn-sm',resetFont);
 
         tools.append(fontDown,fontUp,fontReset,regulerBtn,khususBtn,citoBtn,selectAllBtn,deselectBtn);
-        wrap.append(toggleBtn, printBtn, tools);
-        container.prepend(wrap);
+        tools.prepend(printBtn);
 
-        wrap._toggleBtn = toggleBtn;
+wrap.append(tools);
+        container.appendChild(wrap);
+
         wrap._printBtn = printBtn;
-        wrap._tools = tools;
-        wrap._filterBtns = { regulerBtn, khususBtn, citoBtn };
+wrap._filterBtns = {
+    regulerBtn,
+    khususBtn,
+    citoBtn
+};
     }
 
     function btn(text, cls, fn, html = false) {
@@ -136,13 +143,7 @@
         });
     }
 
-    function togglePrint() {
-        toggleActive = !toggleActive;
-        const wrap = document.querySelector('.col-12').firstChild;
-        wrap._toggleBtn.classList.toggle('btn-active-custom', toggleActive);
-        wrap._printBtn.style.display = toggleActive ? '' : 'none';
-        wrap._tools.style.display = toggleActive ? '' : 'none';
-    }
+  
 
     function enhanceTable() {
         applyFont();
@@ -157,7 +158,9 @@
         document.querySelectorAll('#tabel_antrian_farmasi tbody tr').forEach(tr => {
             if (tr.dataset.sel) return;
             tr.dataset.sel = '1';
-            tr.onclick = () => toggleActive && tr.classList.toggle('selected-print-row');
+            tr.onclick = () => {
+    tr.classList.toggle('selected-print-row');
+};
         });
     }
 
@@ -172,7 +175,7 @@
     }
 
     function updateFilterButtons() {
-        const wrap = document.querySelector('.col-12')?.firstChild;
+        const wrap = document.getElementById('antrian-print-toolbar');
         if (!wrap) return;
         wrap._filterBtns.regulerBtn.classList.toggle('btn-active-custom', activeFilters.has('A'));
         wrap._filterBtns.khususBtn.classList.toggle('btn-active-custom', activeFilters.has('B'));
