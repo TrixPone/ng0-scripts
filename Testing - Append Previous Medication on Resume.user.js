@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Testing - Append Previous Medication on Resume
 // @namespace    http://rsupkandou.com
-// @version      2026-06-13
+// @version      2026-06-26
 // @description  Append previous medication without switching registration
 // @author       TrixPone
 // @match        https://ng0.rsupkandou.com:3000/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/*
+// @match        https://farmasi.rsupkandou.com/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/*
 // @grant        GM_xmlhttpRequest
 // @connect      ng0.rsupkandou.com
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
@@ -27,7 +28,6 @@ const RECENTS_RANGE_KEY = "farmasiRecentsRange";
     "farmasiRecentsCollapsed";
 
 let zeroHighlightActive =
-
     localStorage.getItem(STORAGE_KEY) === "true";
 
 let activeFilters = new Set();
@@ -35,6 +35,9 @@ let activeFilters = new Set();
 let filterContainer = null;
 
 let recentsRows = [];
+
+let drugTableBuilt = false;
+let drugTableBody = null;
 
 // =====================================================
 // WAIT UNTIL FARMASI TAB ACTIVE
@@ -71,7 +74,10 @@ waitForFarmasiReady(initEnhancer);
 function initEnhancer() {
 
     createZeroQtyToggle();
+
     createRecentsUI();
+
+    createDrugTableUI();
 
     loadPreviousFarmasi();
 
@@ -210,6 +216,7 @@ wrapper.appendChild(content);
 
     const table =
         document.createElement('table');
+    table.id = "farmasiRecents";
 
     table.className =
         "table table-sm table-striped table-hover";
@@ -262,8 +269,244 @@ wrapper.appendChild(content);
             );
 
             rebuildRecents();
+            if (drugTableBuilt) {
+
+    buildDrugTable();
+
+}
         };
     });
+}
+
+    // =====================================================
+// DRUG TABLE (TESTING)
+// =====================================================
+
+const DRUGTABLE_COLLAPSE_KEY =
+    "farmasiDrugTableCollapsed";
+
+const DRUGTABLE_RANGE_KEY =
+    "farmasiDrugTableRange";
+
+function createDrugTableUI() {
+
+    const farmasi =
+        document.getElementById("farmasi");
+
+    if (!farmasi) return;
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.style.marginBottom = "10px";
+    wrapper.style.border = "1px solid #00ddbf";
+    wrapper.style.padding = "10px";
+    wrapper.style.borderRadius = "6px";
+
+    let collapsed =
+        localStorage.getItem(
+            DRUGTABLE_COLLAPSE_KEY
+        );
+
+    collapsed =
+        collapsed === null
+            ? true
+            : collapsed === "true";
+
+    const title =
+        document.createElement("div");
+
+    title.style.color = "#00ddbf";
+    title.style.fontWeight = "bold";
+    title.style.cursor = "pointer";
+    title.style.userSelect = "none";
+    title.style.marginBottom = "8px";
+
+    const content =
+        document.createElement("div");
+
+    content.style.display =
+        collapsed ? "none" : "block";
+
+    function refreshTitle() {
+
+        title.innerText =
+            (collapsed ? "▶ " : "▼ ")
+            + "Drug Table (Testing)";
+    }
+
+    refreshTitle();
+
+    title.onclick = () => {
+
+        collapsed = !collapsed;
+
+        localStorage.setItem(
+            DRUGTABLE_COLLAPSE_KEY,
+            collapsed
+        );
+
+        content.style.display =
+            collapsed
+                ? "none"
+                : "block";
+
+        refreshTitle();
+
+        if (
+            !collapsed &&
+            !drugTableBuilt
+        ) {
+
+            buildDrugTable();
+            drugTableBuilt = true;
+        }
+
+    };
+
+   const yearFilter = document.createElement("div");
+
+yearFilter.id = "drugTableYearFilter";
+
+yearFilter.style.marginBottom = "8px";
+
+content.appendChild(yearFilter);
+
+    const rangeFilter =
+    document.createElement("div");
+
+rangeFilter.id =
+    "drugTableRangeFilter";
+
+rangeFilter.style.marginBottom =
+    "10px";
+
+rangeFilter.innerHTML = `
+<label>
+<input type="radio"
+name="drugRange"
+value="1">
+ Latest Month
+</label>
+
+<label style="margin-left:15px">
+<input type="radio"
+name="drugRange"
+value="2">
+ Last 2 Months
+</label>
+
+<label style="margin-left:15px">
+<input type="radio"
+name="drugRange"
+value="3">
+ Last 3 Months
+</label>
+
+<label style="margin-left:15px">
+<input type="radio"
+name="drugRange"
+value="6">
+ Last 6 Months
+</label>
+
+<label style="margin-left:15px">
+<input type="radio"
+name="drugRange"
+value="999">
+ Whole Year
+</label>
+`;
+
+content.appendChild(rangeFilter);
+
+//--------------------------------------------------
+// Expand / Collapse button
+//--------------------------------------------------
+
+const expandBtn =
+    document.createElement("button");
+
+expandBtn.id = "drugTableExpandAll";
+
+expandBtn.className =
+    "btn btn-sm btn-outline-primary";
+
+expandBtn.style.marginBottom = "10px";
+
+expandBtn.dataset.expanded = "false";
+
+expandBtn.innerText = "Expand All";
+
+content.appendChild(expandBtn);
+
+
+const currentRange =
+    localStorage.getItem(
+        DRUGTABLE_RANGE_KEY
+    ) || "1";
+
+const radio =
+    rangeFilter.querySelector(
+        `input[value="${currentRange}"]`
+    );
+
+if (radio)
+    radio.checked = true;
+
+rangeFilter
+.querySelectorAll("input")
+.forEach(r => {
+
+    r.onchange = () => {
+
+        localStorage.setItem(
+            DRUGTABLE_RANGE_KEY,
+            r.value
+        );
+
+        buildDrugTable();
+
+    };
+
+});
+
+
+
+    const table =
+        document.createElement("table");
+    table.id = "drugTable";
+
+table.className =
+"table table-sm table-bordered table-hover";
+
+    table.innerHTML =
+`
+<thead>
+<tr id="drugTableHeader">
+<th>Medication</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+`;
+
+    drugTableBody =
+        table.querySelector("tbody");
+
+    content.appendChild(table);
+
+    wrapper.appendChild(title);
+    wrapper.appendChild(content);
+
+    farmasi.prepend(wrapper);
+
+    if (!collapsed) {
+
+        buildDrugTable();
+        drugTableBuilt = true;
+    }
+
 }
 
 
@@ -539,8 +782,11 @@ function createZeroQtyToggle() {
 // =====================================================
 function highlightZeroQty() {
 
-    document
-    .querySelectorAll('table tbody tr')
+   document.querySelectorAll(`
+#farmasiCurrentTable tbody tr,
+#farmasiRecents tbody tr,
+.farmasi-history-entry table tbody tr
+`)
     .forEach(row => {
 
         const cells =
@@ -710,6 +956,390 @@ function getRelativeTime(timestamp) {
     return `${weeks} minggu lalu`;
 }
 
+    function buildDrugTable() {
+
+    if (!drugTableBody)
+        return;
+
+    const yearFilter =
+        document.getElementById(
+            "drugTableYearFilter"
+        );
+
+    //--------------------------------------------------
+    // Collect all years
+    //--------------------------------------------------
+
+    const years =
+        [...new Set(
+
+            recentsRows.map(r =>
+                new Date(r.timestamp)
+                    .getFullYear()
+            )
+
+        )]
+        .sort((a,b)=>b-a);
+
+        //--------------------------------------------------
+        // Rebuild year filter
+        //--------------------------------------------------
+
+        const previousSelection =
+              [...yearFilter.querySelectorAll("input:checked")]
+        .map(x => Number(x.value));
+
+        yearFilter.innerHTML = "";
+
+        years.forEach((year, index) => {
+
+            const label =
+                  document.createElement("label");
+
+            label.style.marginRight = "12px";
+
+            const latestYear =
+    years[0];
+
+const checked =
+    previousSelection.length
+        ? previousSelection.includes(year)
+        : year === latestYear;
+
+            label.innerHTML =
+                `
+<input
+type="checkbox"
+value="${year}"
+${checked ? "checked" : ""}>
+ ${year}
+`;
+
+            label.querySelector("input").onchange =
+                buildDrugTable;
+
+            yearFilter.appendChild(label);
+
+        });
+
+    //--------------------------------------------------
+    // Selected years
+    //--------------------------------------------------
+
+    const selectedYears =
+        [...yearFilter.querySelectorAll(
+            "input:checked"
+        )]
+        .map(x=>Number(x.value));
+
+    //--------------------------------------------------
+    // Filter rows
+    //--------------------------------------------------
+
+
+
+       const selectedRange =
+    Number(
+        localStorage.getItem(
+            DRUGTABLE_RANGE_KEY
+        ) || 1
+    );
+
+const newestTimestamp =
+    Math.max(
+        ...recentsRows
+            .filter(r =>
+                selectedYears.includes(
+                    new Date(r.timestamp).getFullYear()
+                )
+            )
+            .map(r => r.timestamp)
+    );
+
+const newestDate =
+    new Date(newestTimestamp);
+
+const newestYear =
+    newestDate.getFullYear();
+
+const newestMonth =
+    newestDate.getMonth();
+
+const filtered =
+    recentsRows.filter(r => {
+
+        const d =
+            new Date(r.timestamp);
+
+        if (
+            !selectedYears.includes(
+                d.getFullYear()
+            )
+        ) {
+            return false;
+        }
+
+        const diffMonths =
+            (newestYear - d.getFullYear()) * 12
+            +
+            (newestMonth - d.getMonth());
+
+        return diffMonths < selectedRange;
+
+    });
+
+    //--------------------------------------------------
+    // Dates
+    //--------------------------------------------------
+
+    const allDates =
+        [...new Set(
+
+            filtered.map(r=>{
+
+                const d =
+                    new Date(r.timestamp);
+
+                return (
+`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`
+);
+
+            })
+
+        )]
+        .sort();
+
+    //--------------------------------------------------
+    // Medication map
+    //--------------------------------------------------
+
+    const map={};
+
+    filtered.forEach(r=>{
+
+        const d =
+            new Date(r.timestamp);
+
+        const dateKey=
+`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+
+        const group =
+            r.nama
+            .trim()
+            .split(/\s+/)[0];
+
+        map[group] ??=
+            {variants:{}};
+
+        map[group]
+        .variants[r.nama]
+        ??={};
+
+        map[group]
+        .variants[r.nama][dateKey]=
+
+            (
+                map[group]
+                .variants[r.nama][dateKey]
+                ||0
+            )
+
+            +
+
+            Number(r.qty);
+
+    });
+
+    //--------------------------------------------------
+    // Header
+    //--------------------------------------------------
+
+    const header =
+        document.getElementById(
+            "drugTableHeader"
+        );
+
+    header.innerHTML =
+        "<th>Medication</th>";
+
+    allDates.forEach(date=>{
+
+        const p =
+            date.split("-");
+
+        header.innerHTML+=
+`
+<th>${p[1]}/${p[2]}</th>
+`;
+
+    });
+
+    //--------------------------------------------------
+    // Body
+    //--------------------------------------------------
+
+    drugTableBody.innerHTML="";
+
+    Object.keys(map)
+    .sort()
+    .forEach(group=>{
+
+        const cls =
+"group-"+group.replace(/\W/g,"_");
+
+        drugTableBody.insertAdjacentHTML(
+"beforeend",
+`
+<tr
+class="drugGroup"
+data-group="${cls}"
+data-name="${group}"
+data-open="false"
+style="cursor:pointer">
+
+<td colspan="${allDates.length+1}">
+<b>▶ ${group}</b>
+</td>
+
+</tr>
+`
+);
+
+        Object.keys(
+            map[group].variants
+        )
+        .sort()
+        .forEach(name=>{
+
+            let html=
+`
+<tr
+class="${cls}"
+style="display:none">
+
+<td style="padding-left:24px">
+${name}
+</td>
+`;
+
+            allDates.forEach(date=>{
+
+                html+=
+`
+<td>
+${map[group].variants[name][date] ?? ""}
+</td>
+`;
+
+            });
+
+            html+="</tr>";
+
+            drugTableBody
+            .insertAdjacentHTML(
+                "beforeend",
+                html
+            );
+
+        });
+
+    });
+
+    //--------------------------------------------------
+    // Expand collapse
+    //--------------------------------------------------
+
+    drugTableBody
+    .querySelectorAll(".drugGroup")
+    .forEach(row=>{
+
+        row.onclick=()=>{
+
+            const cls =
+                row.dataset.group;
+
+            const open =
+                row.dataset.open==="true";
+
+            row.dataset.open =
+                !open;
+
+row.querySelector("b").innerText =
+    (open ? "▶ " : "▼ ")
+    + row.dataset.name;
+
+            drugTableBody
+            .querySelectorAll(
+                "."+cls
+            )
+            .forEach(r=>{
+
+                r.style.display=
+                    open
+                    ?"none"
+                    :"";
+
+            });
+
+        };
+
+    });
+
+//--------------------------------------------------
+// Expand / Collapse All
+//--------------------------------------------------
+
+const expandBtn =
+    document.getElementById(
+        "drugTableExpandAll"
+    );
+
+if (expandBtn) {
+
+    expandBtn.onclick = () => {
+
+        const expand =
+            expandBtn.dataset.expanded !== "true";
+
+        drugTableBody
+        .querySelectorAll(".drugGroup")
+        .forEach(row => {
+
+            row.dataset.open = expand;
+
+            row.querySelector("b").innerText =
+                (expand ? "▼ " : "▶ ")
+                + row.dataset.name;
+
+            drugTableBody
+            .querySelectorAll(
+                "." + row.dataset.group
+            )
+            .forEach(r => {
+
+                r.style.display =
+                    expand
+                        ? ""
+                        : "none";
+
+            });
+
+        });
+
+        expandBtn.dataset.expanded =
+            expand;
+
+        expandBtn.innerText =
+            expand
+                ? "Collapse All"
+                : "Expand All";
+
+    };
+
+}
+
+}
+
 
     function rebuildRecents() {
 
@@ -811,6 +1441,9 @@ setTimeout(() => {
         farmasi.querySelector(
             '.table-responsive table'
         );
+    if (currentTable) {
+    currentTable.id = "farmasiCurrentTable";
+}
     console.log(
     "[CURRENT TABLE]",
     currentTable
@@ -829,6 +1462,11 @@ setTimeout(() => {
         );
 
         rebuildRecents();
+        if (drugTableBuilt) {
+
+    buildDrugTable();
+
+}
     }
 
 }, 1000);
@@ -1131,10 +1769,6 @@ if (clonedTable) {
 
                         applyFilter();
 
-
-                        rebuildRecents()
-
-
                         if (zeroHighlightActive) {
                             highlightZeroQty();
                         }
@@ -1144,13 +1778,29 @@ if (clonedTable) {
                         // =================================
                         if (loaded === filtered.length) {
 
-                            loading.innerText =
-                                "Completed ✓";
+    rebuildRecents();
 
-                            setTimeout(() => {
-                                loading.remove();
-                            }, 1200);
-                        }
+    if (drugTableBuilt) {
+
+        buildDrugTable();
+
+    }
+
+    if (zeroHighlightActive) {
+
+        highlightZeroQty();
+
+    }
+
+    loading.innerText = "Completed ✓";
+
+    setTimeout(() => {
+
+        loading.remove();
+
+    }, 1200);
+
+}
                     }
                 });
             });
