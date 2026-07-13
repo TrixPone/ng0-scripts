@@ -173,3 +173,8 @@ Adds a button to automatically confirm retur and skip the modal thing
 <img width="807" height="175" alt="image" src="https://github.com/user-attachments/assets/a436d4b3-1a97-4283-890c-a6ab473eea06" />
 
 [Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Auto%20Confirm%20Return%20Button.user.js)
+
+# 23. Print Queue
+
+Adds an experimental printing queue system
+[Link](https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Print%20Queue.user.js)
