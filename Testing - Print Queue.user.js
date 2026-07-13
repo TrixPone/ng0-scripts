@@ -7,8 +7,8 @@
 // @match        */spa-farmasi
 // @grant        none
 // @run-at       document-idle
-// @updateURL
-// @downloadURL
+// @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Print%20Queue.user.js
+// @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Print%20Queue.user.js
 // ==/UserScript==
 
 /**********************************************************************
