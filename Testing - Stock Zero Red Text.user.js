@@ -6,6 +6,7 @@
 // @author       TrixPone
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=rsupkandou.com
 // @match        */spa-farmasi*
+// @match        https://*.rsupkandou.com/farmasi/depo/C_order_depo/view_order_detail/*
 // @grant        none
 // @updateURL    https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Stock%20Zero%20Red%20Text.user.js
 // @downloadURL  https://github.com/TrixPone/ng0-scripts/raw/refs/heads/main/Testing%20-%20Stock%20Zero%20Red%20Text.user.js
