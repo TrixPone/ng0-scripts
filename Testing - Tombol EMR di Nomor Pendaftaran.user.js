@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Testing - Tombol EMR di Nomor Pendaftaran
 // @namespace    http://rsupkandou.com
-// @version      2026-06-22
-// @description  Testing Add Tombol EMR + Resume di SPA
+// @version      2026-09-01
+// @description  Testing Add Tombol EMR + Resume + CPPT di SPA
 // @author       TrixPone
 // @match        */spa-farmasi
 // @match        https://emr.rsupkandou.com/penunjang/C_historyPenunjang/viewCariHasilPenunjang
@@ -24,110 +24,504 @@
 function addBTN () {
     'use strict';
 
-    //define variables
-var EMR = document.getElementById('wrapperResep').dataset.idtrxpendaftaran
-var URLEMR = 'https://emr.rsupkandou.com/emr/C_emr/loadDetailErm/' + EMR
-const currentBaseURL = window.location.origin;
+    // ============================================================
+    // VARIABLES
+    // ============================================================
 
-var URLResume =
-    currentBaseURL +
-    '/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/' +
-    EMR;
+    var EMR =
+        document.getElementById('wrapperResep').dataset.idtrxpendaftaran;
 
-var GrayBox = document.getElementsByClassName('col-12 mt-1')[0];
+    var URLEMR =
+        'https://emr.rsupkandou.com/emr/C_emr/loadDetailErm/' + EMR;
 
-var NoRM = document.getElementById('wrapperResep').dataset.norm
-GM.setValue ("NoRM", NoRM)
+    var URLResume =
+        'https://emr.rsupkandou.com/penunjang/C_historyPenunjang/getPencarianResumePasienDetail/' + EMR;
 
-var button = document.createElement("Button");
-var button2 = document.createElement("Button");
-var button3 = document.createElement("Button");
-var button4 = document.createElement("Button");
+    var GrayBox =
+        document.getElementsByClassName('col-12 mt-1')[0];
 
-    //define button properties
-button.innerHTML = "CPPT";
-button.onclick = openEMRDetail;
-button.className = 'btn btn-sm btn-success text-light get-print'
+    var NoRM =
+        document.getElementById('wrapperResep').dataset.norm;
 
-button2.innerHTML = "Resume";
-button2.onclick = openResume;
-button2.className = 'btn btn-sm btn-success text-light get-print'
-
-button3.innerHTML = "Lab EMR";
-button3.onclick = cekPenunjang;
-button3.className = 'btn btn-sm btn-success text-light get-print'
-
-button4.innerHTML = "EMR";
-button4.onclick = openEMR;
-button4.className = 'btn btn-sm btn-success text-light get-print'
-
-    //append the button
-GrayBox.appendChild(button4);
-GrayBox.append("\u00A0");
-//GrayBox.appendChild(button);
-//GrayBox.append("\u00A0");
-GrayBox.appendChild(button3);
-GrayBox.append("\u00A0");
-GrayBox.appendChild(button2);
+    // Save NoRM when Farmasi page is initialized
+    GM.setValue("NoRM", NoRM);
 
 
-function openEMRDetail() {
-	GM_openInTab(URLEMR, {incognito: false});
+    // ============================================================
+    // CREATE BUTTONS
+    // ============================================================
+
+    var button =
+        document.createElement("button");
+
+    var button2 =
+        document.createElement("button");
+
+    var button3 =
+        document.createElement("button");
+
+    var button4 =
+        document.createElement("button");
+
+
+    // ============================================================
+    // CPPT BUTTON
+    // ============================================================
+
+    button.innerHTML =
+        "CPPT";
+
+    button.className =
+        'btn btn-sm btn-success text-light get-print';
+
+
+    // Show / hide CPPT buttons
+    button.onclick =
+        function () {
+
+            var cpptButtons =
+                document.getElementById(
+                    'tm-cppt-buttons'
+                );
+
+            if (!cpptButtons) {
+                return;
+            }
+
+            if (
+                cpptButtons.style.display === 'none'
+            ) {
+
+                cpptButtons.style.display =
+                    'inline';
+
+            } else {
+
+                cpptButtons.style.display =
+                    'none';
+
+            }
+
+        };
+
+
+    // ============================================================
+    // RESUME EMR
+    // ============================================================
+
+    button2.innerHTML =
+        "Resume EMR";
+
+    button2.onclick =
+        openResume;
+
+    button2.className =
+        'btn btn-sm btn-success text-light get-print';
+
+
+    // ============================================================
+    // LAB EMR
+    // ============================================================
+
+    button3.innerHTML =
+        "Lab EMR";
+
+    button3.onclick =
+        cekPenunjang;
+
+    button3.className =
+        'btn btn-sm btn-success text-light get-print';
+
+
+    // ============================================================
+    // EMR
+    // ============================================================
+
+    button4.innerHTML =
+        "EMR";
+
+    button4.onclick =
+        openEMR;
+
+    button4.className =
+        'btn btn-sm btn-success text-light get-print';
+
+
+    // ============================================================
+    // CPPT SUB-BUTTON CONTAINER
+    // ============================================================
+
+    var cpptButtons =
+        document.createElement("span");
+
+    cpptButtons.id =
+        'tm-cppt-buttons';
+
+    cpptButtons.style.display =
+        'none';
+
+
+    // ============================================================
+    // CREATE CPPT BUTTON
+    // ============================================================
+
+    function createCPPTButton(
+        text,
+        formID
+    ) {
+
+        var cpptButton =
+            document.createElement("button");
+
+        cpptButton.innerHTML =
+            text;
+
+        // Slightly yellow
+        cpptButton.className =
+            'btn btn-sm btn-warning text-light get-print';
+
+
+        cpptButton.onclick =
+            function () {
+
+                var targetURL =
+                    'https://emr.rsupkandou.com/emr/C_emr/loadDetailErm/' +
+                    EMR +
+                    '/' +
+                    formID;
+
+                GM_openInTab(
+                    targetURL,
+                    {
+                        incognito: false
+                    }
+                );
+
+            };
+
+
+        return cpptButton;
+
+    }
+
+
+    // ============================================================
+    // CREATE THE 4 CPPT BUTTONS
+    // ============================================================
+
+    cpptButtons.appendChild(
+        createCPPTButton(
+            'Rawat Jalan',
+            1
+        )
+    );
+
+    cpptButtons.append(
+        "\u00A0"
+    );
+
+
+    cpptButtons.appendChild(
+        createCPPTButton(
+            'Rawat Inap',
+            14
+        )
+    );
+
+    cpptButtons.append(
+        "\u00A0"
+    );
+
+
+    cpptButtons.appendChild(
+        createCPPTButton(
+            'Rawat Darurat',
+            26
+        )
+    );
+
+    cpptButtons.append(
+        "\u00A0"
+    );
+
+
+    cpptButtons.appendChild(
+        createCPPTButton(
+            'Konsul Umum',
+            42
+        )
+    );
+
+
+    // ============================================================
+    // APPEND BUTTONS
+    // ============================================================
+
+    GrayBox.append(
+        document.createElement('br')
+    );
+
+
+    // CPPT
+    GrayBox.appendChild(
+        button
+    );
+
+    GrayBox.append(
+        "\u00A0"
+    );
+
+
+    // CPPT sub-buttons
+    GrayBox.appendChild(
+        cpptButtons
+    );
+
+    GrayBox.append(
+        "\u00A0"
+    );
+
+
+    // EMR
+    GrayBox.appendChild(
+        button4
+    );
+
+    GrayBox.append(
+        "\u00A0"
+    );
+
+
+    // Lab EMR
+    GrayBox.appendChild(
+        button3
+    );
+
+    GrayBox.append(
+        "\u00A0"
+    );
+
+
+    // Resume EMR
+    GrayBox.appendChild(
+        button2
+    );
+
+
+    // ============================================================
+    // BUTTON FUNCTIONS
+    // ============================================================
+
+    function openResume() {
+
+        window.open(
+            URLResume
+        );
+
+    }
+
+
+    // ============================================================
+    // LAB EMR
+    // ============================================================
+
+    function cekPenunjang() {
+
+        // Save NoRM AGAIN before opening the page
+        GM.setValue(
+            "NoRM",
+            NoRM
+        );
+
+
+        console.log(
+            '[NoRM] Saved before opening Lab EMR:',
+            NoRM
+        );
+
+
+        GM_openInTab(
+            'https://emr.rsupkandou.com/penunjang/C_historyPenunjang/viewCariHasilPenunjang',
+            {
+                incognito: false
+            }
+        );
+
+    }
+
+
+    // ============================================================
+    // EMR
+    // ============================================================
+
+    function openEMR() {
+
+        // Save NoRM AGAIN before opening the page
+        GM.setValue(
+            "NoRM",
+            NoRM
+        );
+
+
+        console.log(
+            '[NoRM] Saved before opening EMR:',
+            NoRM
+        );
+
+
+        GM_openInTab(
+            'https://emr.rsupkandou.com/emr',
+            {
+                incognito: false
+            }
+        );
+
+    }
+
 }
 
-function cekPenunjang() {
-    GM_openInTab('https://emr.rsupkandou.com/penunjang/C_historyPenunjang/viewCariHasilPenunjang', {incognito: false});
-    console.log(GM.getValue("NoRM"));
-}
 
-function openResume() {
-	window.open(URLResume);
-}
+// ================================================================
+// WAIT FOR SPA ELEMENT
+// ================================================================
 
-function openEMR() {
-    GM_openInTab('https://emr.rsupkandou.com/emr', {incognito: false});
-}
-
-}
-
-//wait for SPA element to show up first
-waitForKeyElements (
+waitForKeyElements(
     "div.form-row.mt-3",
-    addBTN, false
+    addBTN,
+    false
 );
 
-(async function NoRM_F () {
-//    console.log(GM.listValues());
-    var NoRM = await GM.getValue("NoRM")
-    console.log(await GM.getValue("NoRM"));
-    const currentURLPath = window.location.pathname
-    if (NoRM === undefined){
-//        GM.notification("No Number", "No Data")
-        console.log(await GM.getValue("NoRM"));
-    } else if (currentURLPath !== '/spa-farmasi') {
-        console.log(await GM.getValue("NoRM"));
-//        GM.notification("Pasted data from SPA", "Value Get!");
-        switch(true){
-            case currentURLPath.indexOf('viewCariHasilPenunjang') > -1:
-                //hopefully these elements doesn't change over time
-                document.getElementById('search_norm_penunjang').value = NoRM;
-                document.getElementById('select_hasil_penunjang').value = 1;
-                document.getElementById('btn_cari_pasien_penunjang').click();
-                break;
-            case currentURLPath === '/emr':
-                document.getElementById('norm').value = NoRM;
-                document.getElementsByClassName('btn btn-sm float-right btn-submit-color')[0].click();
-                break;
-            case currentURLPath.indexOf('loadDetailErm') > -1 :
-                document.getElementById('jenis_form_rmk-selectized').click();
-//                document.getElementById('jenis_form_rmk-selectized').click();
-//                document.querySelectorAll('[data-value="V_emr_rmk_3_2_rev_5 // 14"]')[0].click();
-//               document.getElementsByClassName('selectize-input items has-options full has-items')[0].click();
-                break;
-            //delete the value after using it
-            GM.deleteValue("NoRM");
-           }
-    }
-}
-)();
 
+// ================================================================
+// NoRM HANDLER
+// ================================================================
+
+(async function NoRM_F () {
+
+    var NoRM =
+        await GM.getValue("NoRM");
+
+
+    console.log(
+        '[NoRM]',
+        NoRM
+    );
+
+
+    const currentURLPath =
+        window.location.pathname;
+
+
+    if (
+        NoRM === undefined
+    ) {
+
+        console.log(
+            '[NoRM] No saved NoRM'
+        );
+
+    }
+
+
+    else if (
+        currentURLPath !== '/spa-farmasi'
+    ) {
+
+        console.log(
+            '[NoRM] Using:',
+            NoRM
+        );
+
+
+        switch(true) {
+
+
+            // ====================================================
+            // PENUNJANG
+            // ====================================================
+
+            case currentURLPath.indexOf(
+                'viewCariHasilPenunjang'
+            ) > -1:
+
+                document.getElementById(
+                    'search_norm_penunjang'
+                ).value =
+                    NoRM;
+
+
+                document.getElementById(
+                    'select_hasil_penunjang'
+                ).value =
+                    1;
+
+
+                document.getElementById(
+                    'btn_cari_pasien_penunjang'
+                ).click();
+
+
+                break;
+
+
+            // ====================================================
+            // EMR
+            // ====================================================
+
+            case currentURLPath === '/emr':
+
+                document.getElementById(
+                    'norm'
+                ).value =
+                    NoRM;
+
+
+                document
+                    .getElementsByClassName(
+                        'btn btn-sm float-right btn-submit-color'
+                    )[0]
+                    .click();
+
+
+                break;
+
+
+            // ====================================================
+            // EMR DETAIL
+            // ====================================================
+
+            case currentURLPath.indexOf(
+                'loadDetailErm'
+            ) > -1:
+
+                var selectizeInput =
+                    document.getElementById(
+                        'jenis_form_rmk-selectized'
+                    );
+
+
+                if (
+                    selectizeInput
+                ) {
+
+                    selectizeInput.click();
+
+                }
+
+
+                break;
+
+        }
+
+
+        // ========================================================
+        // DELETE NoRM AFTER USE
+        // ========================================================
+
+        GM.deleteValue(
+            "NoRM"
+        );
+
+    }
+
+})();
